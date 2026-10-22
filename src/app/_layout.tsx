@@ -1,18 +1,20 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import "../../global.css";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
 
-SplashScreen.preventAutoHideAsync();
+export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    "Fredoka-Medium": require("../../assets/fonts/Fredoka-Medium.ttf"),
+    "Fredoka-SemiBold": require("../../assets/fonts/Fredoka-SemiBold.ttf"),
+    "Nunito-Regular": require("../../assets/fonts/Nunito-Regular.ttf"),
+    "Nunito-Medium": require("../../assets/fonts/Nunito-Medium.ttf"),
+    "Nunito-Bold": require("../../assets/fonts/Nunito-Bold.ttf"),
+  });
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
-  );
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return <Stack />;
 }
