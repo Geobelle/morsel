@@ -5,7 +5,9 @@ const Recipe = () => {
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View>
-        <Text className="text-primary-dark font-heading text-3xl">Recipe</Text>
+        <Text className="text-primary-dark font-heading text-3xl">
+          My Recipes
+        </Text>
       </View>
     </SafeAreaView>
   );
