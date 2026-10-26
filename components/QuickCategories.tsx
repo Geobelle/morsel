@@ -37,7 +37,7 @@ const QuickCategories = () => {
           style={{ width: 50, height: 50 }}
           resizeMode="contain"
         />
-        <Text className="font-recipe-title text-primary-dark">Snacks</Text>
+        <Text className="font-recipe-title text-primary-dark">Salads</Text>
       </Pressable>
 
       <Pressable className="w-[31.5%] items-center gap-2 rounded-xl bg-sage-light px-2 py-4">
@@ -46,7 +46,7 @@ const QuickCategories = () => {
           style={{ width: 50, height: 50 }}
           resizeMode="contain"
         />
-        <Text className="font-recipe-title text-primary-dark">Desserts</Text>
+        <Text className="font-recipe-title text-primary-dark">Snacks</Text>
       </Pressable>
 
       <Pressable className="w-[31.5%] items-center gap-2 rounded-xl bg-sage-light px-2 py-4">
