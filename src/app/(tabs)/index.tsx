@@ -21,7 +21,7 @@ const Tabindex = () => {
     <SafeAreaView className="flex-1 p-5 bg-background">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <FlatList
-          data={reciepeDetails}
+          data={reciepeDetails.slice(0, 2)}
           renderItem={({ item }) => <ReciepeCard {...item} />}
           keyExtractor={(item) => item.id}
           numColumns={2}

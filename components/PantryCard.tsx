@@ -20,7 +20,7 @@ const PantryCard = ({ name, quantity, image, id }: pantryitem) => {
       />
 
       {/* pantry details */}
-      <View className="p-3 gap-2">
+      <View className="p-3">
         <Text
           className="font-ingredient capitalize text-primary-dark text-lg flex-1"
           numberOfLines={1}

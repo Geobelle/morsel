@@ -1,4 +1,4 @@
-import { icons } from "./tabIcons";
+import { tabicons } from "./tabIcons";
 
 import image from "./image";
 import panttryItems from "./panttryItems";
@@ -8,32 +8,32 @@ export const tabsDetails = [
     name: "index",
     title: "Home",
     icon: {
-      focused: icons.homeFilled,
-      unfocused: icons.homeUnfilled,
+      focused: tabicons.homeFilled,
+      unfocused: tabicons.homeUnfilled,
     },
   },
   {
     name: "recipes",
     title: "Recipes",
     icon: {
-      focused: icons.reciepe,
-      unfocused: icons.recciepeUnfilled,
+      focused: tabicons.reciepe,
+      unfocused: tabicons.recciepeUnfilled,
     },
   },
   {
     name: "pantry",
     title: "Pantry",
     icon: {
-      focused: icons.pantry,
-      unfocused: icons.pantryUnfilled,
+      focused: tabicons.pantry,
+      unfocused: tabicons.pantryUnfilled,
     },
   },
   {
     name: "whatToCook",
     title: "What to Cook",
     icon: {
-      focused: icons.whatToCook,
-      unfocused: icons.whatToCookUnfilled,
+      focused: tabicons.whatToCook,
+      unfocused: tabicons.whatToCookUnfilled,
     },
   },
 
@@ -41,8 +41,8 @@ export const tabsDetails = [
     name: "profile",
     title: "Profile",
     icon: {
-      focused: icons.profile,
-      unfocused: icons.profileUnfilled,
+      focused: tabicons.profile,
+      unfocused: tabicons.profileUnfilled,
     },
   },
 ];
@@ -101,3 +101,6 @@ export const pantryItems: pantryitem[] = [
   },
   { name: "fish", id: "15", image: panttryItems.fish, quantity: "2kg" },
 ];
+
+export const exactRecipe: ReciepeDetails[] = [];
+export const partialRecipe: ReciepeDetails[] = [];

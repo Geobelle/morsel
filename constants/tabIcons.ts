@@ -9,7 +9,7 @@ import recciepeUnfilled from "@/assets/tabIcon/recipeunfilled.png";
 import whatToCook from "@/assets/tabIcon/whatToCook.png";
 import whatToCookUnfilled from "@/assets/tabIcon/whatToCookUnfilled.png";
 
-export const icons = {
+export const tabicons = {
   homeFilled,
   homeUnfilled,
   reciepe,
@@ -22,4 +22,4 @@ export const icons = {
   profileUnfilled,
 } as const;
 
-export type IconKey = keyof typeof icons;
+export type IconKey = keyof typeof tabicons;
