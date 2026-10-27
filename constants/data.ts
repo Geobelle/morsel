@@ -1,6 +1,7 @@
 import { icons } from "./tabIcons";
 
 import image from "./image";
+import panttryItems from "./panttryItems";
 
 export const tabsDetails = [
   {
@@ -70,4 +71,33 @@ export const reciepeDetails: ReciepeDetails[] = [
     Preparation:
       "Egusi soup is prepared by boiling seasoned meat and fish until tender. Palm oil is heated with onions and pepper, then ground egusi is added and cooked until thick. Meat stock, crayfish, cooked meat, and fish are added and simmered until the soup thickens. Finally, vegetables such as ugu or bitterleaf are stirred in and cooked briefly. The soup is seasoned to taste and served hot with eba, pounded yam, fufu, or semovita.",
   },
+];
+
+export const pantryItems: pantryitem[] = [
+  { name: "eggs", id: "16", image: panttryItems.egg, quantity: "2kg" },
+  { name: "tomatoes", id: "1", image: panttryItems.tomatoes, quantity: "2kg" },
+  { name: "onions", id: "2", image: panttryItems.onions, quantity: "2kg" },
+  { name: "chicken", id: "3", image: panttryItems.chicken, quantity: "2kg" },
+  { name: "rice", id: "4", image: panttryItems.rice, quantity: "2kg" },
+  { name: "oil", id: "5", image: panttryItems.oil, quantity: "2kg" },
+  { name: "pepper", id: "6", image: panttryItems.pepper, quantity: "2kg" },
+  { name: "garlic", id: "7", image: panttryItems.garlic, quantity: "2kg" },
+  { name: "ginger", id: "8", image: panttryItems.ginger, quantity: "2kg" },
+  { name: "palm oil", id: "9", image: panttryItems.palmOil, quantity: "2kg" },
+  { name: "beans", id: "10", image: panttryItems.beans, quantity: "2kg" },
+  {
+    name: "bell pepper",
+    id: "11",
+    image: panttryItems.bellPepper,
+    quantity: "2kg",
+  },
+  { name: "plantain", id: "12", image: panttryItems.plantain, quantity: "2kg" },
+  { name: "ugu", id: "13", image: panttryItems.ugu, quantity: "2kg" },
+  {
+    name: "zobo leaf",
+    id: "14",
+    image: panttryItems.zoboLeaf,
+    quantity: "2kg",
+  },
+  { name: "fish", id: "15", image: panttryItems.fish, quantity: "2kg" },
 ];

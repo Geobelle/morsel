@@ -19,6 +19,13 @@ declare global {
     name: string;
     time: string;
   }
+
+  interface pantryitem {
+    name: string;
+    id: string;
+    image: ImageSourcePropType;
+    quantity: string;
+  }
 }
 
 export {};

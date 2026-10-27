@@ -19,6 +19,9 @@ const Recipe = () => {
           renderItem={({ item }) => <ReciepeInfoCard {...item} />}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator
+          ListEmptyComponent={
+            <Text className="home-empty-state">No recipes yet</Text>
+          }
         />
       </View>
     </SafeAreaView>
