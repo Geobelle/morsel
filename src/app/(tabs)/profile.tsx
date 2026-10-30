@@ -1,6 +1,7 @@
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { pantryItems, reciepeDetails } from "../../../constants/data";
+import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
 const profile = () => {
@@ -50,9 +51,164 @@ const profile = () => {
             </Text>
           </View>
         </View>
+
+        <View
+          style={styles.shadow}
+          className=" mt-6 rounded-2xl bg-background "
+        >
+          <Pressable
+            accessibilityRole="button"
+            className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light  `}
+          >
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={icons.list}
+                style={{
+                  width: 16,
+                  height: 16,
+                }}
+                resizeMode="contain"
+              />
+
+              <Text className="font-recipe-title text-primary-dark">
+                Shopping List
+              </Text>
+            </View>
+            <Image
+              source={icons.forward}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
+            className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light  `}
+          >
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={icons.plan}
+                style={{
+                  width: 16,
+                  height: 16,
+                }}
+                resizeMode="contain"
+              />
+
+              <Text className="font-recipe-title text-primary-dark">
+                Plan Meals
+              </Text>
+            </View>
+            <Image
+              source={icons.forward}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
+            className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light `}
+          >
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={icons.ingredients}
+                style={{
+                  width: 16,
+                  height: 16,
+                }}
+                resizeMode="contain"
+              />
+
+              <Text className="font-recipe-title text-primary-dark">
+                Add Ingredients
+              </Text>
+            </View>
+            <Image
+              source={icons.forward}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
+            className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light  `}
+          >
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={icons.settings}
+                style={{
+                  width: 16,
+                  height: 16,
+                }}
+                resizeMode="contain"
+              />
+
+              <Text className="font-recipe-title text-primary-dark">
+                Settings
+              </Text>
+            </View>
+            <Image
+              source={icons.forward}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <Pressable
+            accessibilityRole="button"
+            className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light   `}
+          >
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={icons.help}
+                style={{
+                  width: 16,
+                  height: 16,
+                }}
+                resizeMode="contain"
+              />
+
+              <Text className="font-recipe-title text-primary-dark">
+                Help & Support
+              </Text>
+            </View>
+            <Image
+              source={icons.forward}
+              style={{
+                width: 15,
+                height: 15,
+              }}
+              resizeMode="contain"
+            />
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 export default profile;
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.03,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+});
