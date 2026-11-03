@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReciepeInfoCard from "../../../components/ReciepeInfoCard";
 import RecipeCategory from "../../../components/RecipeCategory";
@@ -12,7 +12,15 @@ const Recipe = () => {
         My Recipes
       </Text>
       <RecipeCategory />
-      <SearchBar />
+      <View className="flex flex-row justify-between items-center">
+        <View className="w-[82%]">
+          <SearchBar />
+        </View>
+
+        <Pressable className="rounded-full bg-primary-dark w-14 h-14 flex items-center mt-3 justify-center">
+          <Text className="text-5xl font-recipe-title  text-background">+</Text>
+        </Pressable>
+      </View>
       <View className="mt-4">
         <FlatList
           data={reciepeDetails}

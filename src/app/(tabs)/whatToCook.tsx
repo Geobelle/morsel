@@ -69,7 +69,7 @@ const WhatToCook = () => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator
           ListEmptyComponent={
-            <Text className="home-empty-state">No recipes yet</Text>
+            <Text className="home-empty-state">No exact matches yet</Text>
           }
         />
 
@@ -98,7 +98,7 @@ const WhatToCook = () => {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator
           ListEmptyComponent={
-            <Text className="home-empty-state">No recipes yet</Text>
+            <Text className="home-empty-state">No partial matches yet</Text>
           }
         />
       </View>

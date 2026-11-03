@@ -1,8 +1,10 @@
 import profileImage from "@/assets/images/Group 5.png";
 import breakfast from "@/assets/images/breakfast.png";
+import camera from "@/assets/images/camera.png";
 import dinner from "@/assets/images/dinner.png";
 import drinks from "@/assets/images/drinks.png";
 import jollof from "@/assets/images/f1ddddfd-4b7d-45d1-aa75-00012fbbb594_4516x2540.jpg";
+import leaf from "@/assets/images/leaf.png";
 import lunch from "@/assets/images/lunch.png";
 import salad from "@/assets/images/salad.png";
 import snack from "@/assets/images/snacks.png";
@@ -18,4 +20,6 @@ export default {
   drinks,
   jollof,
   egusi,
+  leaf,
+  camera,
 };

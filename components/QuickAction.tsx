@@ -33,7 +33,7 @@ const QuickAction = () => {
         />
         <Text className="font-recipe-title text-primary-dark text-center">
           {" "}
-          Add Ingredients
+          Add Pantry Item
         </Text>
       </Pressable>
     </View>

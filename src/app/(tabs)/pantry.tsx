@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { FlatList, Keyboard, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PantryCard from "../../../components/PantryCard";
@@ -19,7 +20,12 @@ const Pantry = () => {
               <SearchIngredients />
             </View>
 
-            <Pressable className="rounded-full bg-primary-dark w-14 h-14 flex items-center mt-3 justify-center">
+            <Pressable
+              onPress={() => {
+                router.push("/(pantryItems)/addPantryItem");
+              }}
+              className="rounded-full bg-primary-dark w-14 h-14 flex items-center mt-3 justify-center"
+            >
               <Text className="text-5xl font-recipe-title  text-background">
                 +
               </Text>

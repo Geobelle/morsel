@@ -6,7 +6,6 @@ const SearchBar = () => {
   const [text, setText] = useState("");
 
   return (
-    // <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.container}>
       <Image source={icons.search} style={styles.icon} resizeMode="contain" />
 
@@ -18,7 +17,6 @@ const SearchBar = () => {
         placeholderTextColor="#B7B7B7"
       />
     </View>
-    // </TouchableWithoutFeedback>
   );
 };
 

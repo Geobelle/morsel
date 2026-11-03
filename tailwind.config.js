@@ -22,7 +22,7 @@ module.exports = {
         background: "#FBFCFB",
         primary: "#8FB89A",
         "primary-dark": "#53765B",
-        "sage-light": "#EEF4ED",
+        "sage-light": "#EBEFE3",
         cream: "#F7E9D8",
         foreground: "#493F38",
       },
