@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
-const repeatOptions = [
+const foodOptions = [
   "Breakfast",
   "Lunch",
   "Dinner",
@@ -33,7 +33,7 @@ export default function CategoryDropDown({
 
       {open && (
         <View className="absolute left-0 top-12 z-50 w-full overflow-hidden rounded-lg border border-primary bg-background shadow-md">
-          {repeatOptions.map((option) => (
+          {foodOptions.map((option) => (
             <Pressable
               key={option}
               onPress={() => {

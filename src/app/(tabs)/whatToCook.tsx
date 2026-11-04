@@ -67,7 +67,7 @@ const WhatToCook = () => {
           data={exactRecipe.slice(0, 2)}
           renderItem={({ item }) => <ExactMatches {...item} />}
           keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <Text className="home-empty-state">No exact matches yet</Text>
           }
@@ -96,7 +96,7 @@ const WhatToCook = () => {
           data={partialRecipe.slice(0, 2)}
           renderItem={({ item }) => <PartialMatches {...item} />}
           keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <Text className="home-empty-state">No partial matches yet</Text>
           }

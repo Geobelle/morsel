@@ -24,7 +24,9 @@ declare global {
     name: string;
     id: string;
     image: ImageSourcePropType;
-    quantity: string;
+    quantity: number;
+    category: string;
+    unit: string;
   }
 }
 

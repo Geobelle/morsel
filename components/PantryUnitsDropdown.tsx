@@ -27,7 +27,7 @@ export default function PantryUnitDropDown({
     <View className="relative">
       <Pressable
         onPress={() => setOpen(!open)}
-        className="h-14 w-full flex-row items-center justify-between rounded-xl border border-sage-light bg-background px-4"
+        className="h-14 w-full flex-row items-center justify-between rounded-xl border border-primary bg-background px-4"
       >
         <Text className="text-sm text-primary">{value}</Text>
         <Text className="text-xs text-primary">{open ? "▲" : "▼"}</Text>
