@@ -2,6 +2,7 @@ import profileImage from "@/assets/images/Group 5.png";
 import add from "@/assets/images/add.png";
 import breakfast from "@/assets/images/breakfast.png";
 import camera from "@/assets/images/camera.png";
+import deleteOption from "@/assets/images/delete.png";
 import dinner from "@/assets/images/dinner.png";
 import drinks from "@/assets/images/drinks.png";
 import jollof from "@/assets/images/f1ddddfd-4b7d-45d1-aa75-00012fbbb594_4516x2540.jpg";
@@ -28,4 +29,5 @@ export default {
   pot,
   time,
   add,
+  deleteOption,
 };
