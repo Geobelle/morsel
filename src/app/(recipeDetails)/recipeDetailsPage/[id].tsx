@@ -39,9 +39,36 @@ const details = () => {
             resizeMode="cover"
           />
         </View>
-        <Text className="text-primary-dark mt-4 font-heading text-3xl">
-          {recipe?.name}
-        </Text>
+        <View className="flex-row  mt-4 items-center justify-between">
+          <Text className="text-primary-dark font-heading text-3xl">
+            {recipe?.name}
+          </Text>
+
+          <View className="flex-row  gap-3">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/(recipeDetails)/editrecipe/[id]",
+                  params: { id },
+                });
+              }}
+              className="bg-sage-light rounded-full px-3 py-2"
+            >
+              <Text className="font-body text-primary-dark">✎ Edit</Text>
+            </Pressable>
+
+            <Pressable className="bg-red-300 rounded-full flex items-center  px-3 py-3">
+              <Image
+                source={image.deleteOption}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                resizeMode="contain"
+              />
+            </Pressable>
+          </View>
+        </View>
 
         <View className="flex flex-row mt-4 gap-4">
           <View className="flex flex-row gap-3 py-2 px-4 rounded-full bg-sage-light ">
@@ -80,7 +107,10 @@ const details = () => {
           </Text>
 
           {recipe?.ingredients.map((item) => (
-            <View className="flex flex-row justify-between items-center mb-3  border-b border-sage-light">
+            <View
+              key={item.id}
+              className="flex flex-row justify-between items-center mb-3  border-b border-sage-light"
+            >
               <Text className="text-foreground text-lg font-body capitalize">
                 {item.name}
               </Text>

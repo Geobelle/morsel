@@ -20,7 +20,7 @@ declare global {
     image: ImageSourcePropType;
     name: string;
     time: string;
-    category?: string;
+    category: string;
     ingredients: Ingredients[];
     Preparation: Preparation[];
   }

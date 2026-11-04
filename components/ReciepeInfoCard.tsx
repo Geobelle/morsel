@@ -17,7 +17,7 @@ const ReciepeInfoCard = ({ id, name, time, image, category }: ReciepeCard) => {
           params: { id },
         });
       }}
-      className="bg-white w-full flex h-fit flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
+      className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
       <Image
         source={image}
@@ -25,15 +25,10 @@ const ReciepeInfoCard = ({ id, name, time, image, category }: ReciepeCard) => {
         resizeMode="cover"
       />
 
-      {/* Recipe details */}
-      <View className="pl-2 w-2/3">
-        <View className="flex items-end justify-end w-full">
-          <Text className="text-2xl ">...</Text>
-        </View>
-
-        <View className="flex gap-1">
+      <View className="pl-3 pr-2 flex-1 py-2">
+        <View className="gap-1">
           <Text
-            className="font-recipe-title text-primary-dark text-lg "
+            className="font-recipe-title text-primary-dark text-lg"
             numberOfLines={1}
           >
             {name}
@@ -41,7 +36,7 @@ const ReciepeInfoCard = ({ id, name, time, image, category }: ReciepeCard) => {
 
           <Text className="text-sm text-foreground font-body">{time}</Text>
 
-          <Text className="font-recipe-title text-primary-dark w-1/3 rounded-full  py-2 px-3 bg-sage-light capitalize">
+          <Text className="self-start font-body text-xs text-primary-dark bg-sage-light rounded-md px-2 py-1">
             {category}
           </Text>
         </View>

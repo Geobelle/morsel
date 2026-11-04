@@ -114,7 +114,7 @@ const editPantryItem = () => {
                       setQuantity(text === "" ? "" : Number(text))
                     }
                     keyboardType="numeric"
-                    className="w-24 h-[48px] border-x border-primary rounded-xl px-2 text-center text-foreground font-body"
+                    className="w-24 h-[48px] border border-primary rounded-xl px-2 text-center text-foreground font-body"
                     placeholder="2"
                     placeholderTextColor="#8FB89A"
                   />

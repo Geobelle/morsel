@@ -27,7 +27,7 @@ const Recipe = () => {
           <Text className="text-5xl font-recipe-title  text-background">+</Text>
         </Pressable>
       </View>
-      <View className="mt-4">
+      <View className="mt-4 mb-60">
         <FlatList
           data={reciepeDetails}
           renderItem={({ item }) => <ReciepeInfoCard {...item} />}
