@@ -2,6 +2,7 @@ import profileImage from "@/assets/images/Group 5.png";
 import add from "@/assets/images/add.png";
 import breakfast from "@/assets/images/breakfast.png";
 import camera from "@/assets/images/camera.png";
+import catergotyIcon from "@/assets/images/categoryIcon.png";
 import deleteOption from "@/assets/images/delete.png";
 import dinner from "@/assets/images/dinner.png";
 import drinks from "@/assets/images/drinks.png";
@@ -30,4 +31,5 @@ export default {
   time,
   add,
   deleteOption,
+  catergotyIcon,
 };

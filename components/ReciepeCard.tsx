@@ -1,6 +1,6 @@
 import { Image, Text, useWindowDimensions, View } from "react-native";
 
-const ReciepeCard = ({ name, time, image }: ReciepeCard) => {
+const ReciepeCard = ({ id, name, time, image }: ReciepeCard) => {
   const { width } = useWindowDimensions();
   const cardWidth = (width - 40) / 2;
 

@@ -54,10 +54,54 @@ export const reciepeDetails: ReciepeDetails[] = [
     time: "45 mins",
     image: image.jollof,
     category: "lunch",
-    ingredients:
-      " rice, tomatoes, oil, pepper, shobo, onions tomato paste, bay leaf, maggi, curry, salt,",
-    Preparation:
-      "Wash the rice and blend tomatoes, red bell peppers, scotch bonnet peppers, and onions Cook the stew base: Heat oil, sauté onions, add tomato paste, and fry for a few minutes. Add the blended mixture and cook until thick and the excess water reduces. Add stock, curry powder, thyme, bay leaves, seasoning cubes, and salt to taste. Add rice: Stir in the washed rice until well coated with the sauce. Cover the pot tightly and cook on low heat until the rice is tender, adding a little stock or water if necessary. Allow the rice to steam until fully cooked, fluff gently, and serve hot with chicken, beef, fried plantain, or vegetables.",
+    ingredients: [
+      { id: "rice", name: "Rice", quantity: "2 cups" },
+      { id: "tomatoes", name: "Tomatoes", quantity: "2 cups" },
+      { id: "oil", name: "oil", quantity: "2 cups" },
+      { id: "pepper", name: "pepper", quantity: "2 cups" },
+      { id: "shobo", name: "shobo", quantity: "2 cups" },
+      { id: "onions", name: "onions", quantity: "2 cups" },
+      { id: "tomatoPaste", name: "tomato paste", quantity: "2 cups" },
+      { id: "bayleaf", name: "bay leaf", quantity: "2 cups" },
+      { id: "maggi", name: "maggi", quantity: "2 cups" },
+      { id: "curry", name: "curry", quantity: "2 cups" },
+      { id: "salt", name: "salt", quantity: "2 cups" },
+    ],
+
+    Preparation: [
+      {
+        id: "1",
+        name: "Wash the rice thoroughly under running water and set aside.",
+      },
+      {
+        id: "2",
+        name: "Blend tomatoes, red bell peppers, scotch bonnet peppers and onions until smooth.",
+      },
+      {
+        id: "3",
+        name: "Heat vegetable oil in a pot, add sliced onions and tomato paste, and fry for a few minutes.",
+      },
+      {
+        id: "4",
+        name: "Pour in the blended pepper mixture and cook until the sauce thickens and the excess liquid reduces.",
+      },
+      {
+        id: "5",
+        name: "Season with curry powder, thyme, stock cubes, salt and your preferred spices.",
+      },
+      {
+        id: "6",
+        name: "Add stock and rinsed rice, stirring until the rice is evenly coated with the sauce.",
+      },
+      {
+        id: "7",
+        name: "Cover the pot with foil and a lid, then cook on low heat until the rice is tender, stirring occasionally.",
+      },
+      {
+        id: "8",
+        name: "Fluff the rice gently, allow it to steam for a few more minutes, and serve hot.",
+      },
+    ],
   },
 
   {
@@ -66,10 +110,58 @@ export const reciepeDetails: ReciepeDetails[] = [
     time: "30 mins",
     image: image.egusi,
     category: "dinner",
-    ingredients:
-      " egusi, crayfish, stockfish, meat stock, meat, red oil, pepper, leaf, maggi, curry, salt,",
-    Preparation:
-      "Egusi soup is prepared by boiling seasoned meat and fish until tender. Palm oil is heated with onions and pepper, then ground egusi is added and cooked until thick. Meat stock, crayfish, cooked meat, and fish are added and simmered until the soup thickens. Finally, vegetables such as ugu or bitterleaf are stirred in and cooked briefly. The soup is seasoned to taste and served hot with eba, pounded yam, fufu, or semovita.",
+    ingredients: [
+      { id: "egusi", name: "egusi", quantity: "2 cups" },
+      { id: "crayfish", name: "crayfish", quantity: "2 cups" },
+      { id: "stockfish", name: "stockfish", quantity: "2 cups" },
+      { id: "pepper", name: "pepper", quantity: "2 cups" },
+      { id: "meatstock", name: "meat stock", quantity: "2 cups" },
+      { id: "meat", name: "meat", quantity: "2 cups" },
+      { id: "redoil", name: "red oil", quantity: "2 cups" },
+      { id: "leaf", name: "leaf", quantity: "2 cups" },
+      { id: "maggi", name: "maggi", quantity: "2 cups" },
+      { id: "curry", name: "curry", quantity: "2 cups" },
+      { id: "salt", name: "salt", quantity: "2 cups" },
+    ],
+
+    Preparation: [
+      {
+        id: "1",
+        name: "Wash and season your meat or assorted meat with onions, stock cubes and salt, then cook until tender.",
+      },
+      {
+        id: "2",
+        name: "Grind the egusi seeds into a smooth powder and mix with a little water to form a thick paste.",
+      },
+      {
+        id: "3",
+        name: "Heat palm oil in a pot, add chopped onions and fry briefly.",
+      },
+      {
+        id: "4",
+        name: "Add blended pepper and cook until the mixture thickens and the oil begins to separate.",
+      },
+      {
+        id: "5",
+        name: "Add the egusi paste in small portions and allow it to cook until it forms soft lumps.",
+      },
+      {
+        id: "6",
+        name: "Pour in the meat stock, add the cooked meat, crayfish, stock cubes and salt, then stir gently.",
+      },
+      {
+        id: "7",
+        name: "Cover and simmer until the egusi is fully cooked and the soup reaches your preferred consistency.",
+      },
+      {
+        id: "8",
+        name: "Add washed ugu or spinach leaves, stir and cook for a few more minutes.",
+      },
+      {
+        id: "9",
+        name: "Taste and adjust the seasoning, then serve hot with your preferred swallow.",
+      },
+    ],
   },
 ];
 
