@@ -29,7 +29,7 @@ export default function PantryUnitDropDown({
         onPress={() => setOpen(!open)}
         className="h-14 w-full flex-row items-center justify-between rounded-xl border border-primary bg-background px-4"
       >
-        <Text className="text-sm text-primary">{value}</Text>
+        <Text className="text-sm text-primary-dark">{value}</Text>
         <Text className="text-xs text-primary">{open ? "▲" : "▼"}</Text>
       </Pressable>
 

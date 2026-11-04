@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReciepeInfoCard from "../../../components/ReciepeInfoCard";
@@ -17,7 +18,12 @@ const Recipe = () => {
           <SearchBar />
         </View>
 
-        <Pressable className="rounded-full bg-primary-dark w-14 h-14 flex items-center mt-3 justify-center">
+        <Pressable
+          onPress={() => {
+            router.push("/(recipeDetails)/addRecipe");
+          }}
+          className="rounded-full bg-primary-dark w-14 h-14 flex items-center mt-3 justify-center"
+        >
           <Text className="text-5xl font-recipe-title  text-background">+</Text>
         </Pressable>
       </View>
