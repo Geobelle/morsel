@@ -18,7 +18,7 @@ import { pantryItems } from "../../../../constants/data";
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
 
-const editPantryItem = () => {
+const EditPantryItem = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [text, setText] = useState("");
   const [unit, setUnit] = useState("");
@@ -43,7 +43,10 @@ const editPantryItem = () => {
             <View className="flex mb-6 flex-row relative items-center">
               <Pressable
                 onPress={() => {
-                  router.push("/(tabs)/pantry");
+                  router.push({
+                    pathname: "/(pantryItems)/pantryDetails/[id]",
+                    params: { id },
+                  });
                 }}
                 className="bg-sage-light rounded-full p-3 z-50"
               >
@@ -194,4 +197,4 @@ const styles = StyleSheet.create({
     color: "#493F38",
   },
 });
-export default editPantryItem;
+export default EditPantryItem;

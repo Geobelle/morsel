@@ -18,7 +18,7 @@ import InstructionsField from "../../../components/InstructionsField";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
-const addRecipe = () => {
+const AddRecipe = () => {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("Breakfast");
 
@@ -291,4 +291,4 @@ const styles = StyleSheet.create({
     color: "#493F38",
   },
 });
-export default addRecipe;
+export default AddRecipe;

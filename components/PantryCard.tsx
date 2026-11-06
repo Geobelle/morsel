@@ -15,7 +15,7 @@ const PantryCard = ({ name, quantity, image, id, unit }: pantryitem) => {
     <Pressable
       onPress={() => {
         router.push({
-          pathname: "/(pantryItems)/editPantryItem/[id]",
+          pathname: "/(pantryItems)/pantryDetails/[id]",
           params: { id },
         });
       }}

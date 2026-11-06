@@ -4,7 +4,7 @@ import { pantryItems, reciepeDetails } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
-const profile = () => {
+const Profile = () => {
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View>
@@ -201,7 +201,7 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;
 
 const styles = StyleSheet.create({
   shadow: {

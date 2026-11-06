@@ -17,7 +17,7 @@ import { reciepeDetails } from "../../../../constants/data";
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
 
-const editRecipe = () => {
+const EditRecipe = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const recipe = reciepeDetails.find((item) => item.id === id);
   const [name, setName] = useState("");
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
     color: "#493F38",
   },
 });
-export default editRecipe;
+export default EditRecipe;

@@ -17,7 +17,7 @@ import PantryUnitDropDown from "../../../components/PantryUnitsDropdown";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
-const addPantryItem = () => {
+const AddPantryItem = () => {
   const [text, setText] = useState("");
   const [unit, setUnit] = useState("pcs");
   const [category, setCategory] = useState("fresh");
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
     color: "#493F38",
   },
 });
-export default addPantryItem;
+export default AddPantryItem;

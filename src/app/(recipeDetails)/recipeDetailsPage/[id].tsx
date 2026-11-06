@@ -5,7 +5,7 @@ import { reciepeDetails } from "../../../../constants/data";
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
 
-const details = () => {
+const RecipeDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const recipe = reciepeDetails.find((item) => item.id === id);
   return (
@@ -127,7 +127,10 @@ const details = () => {
           </Text>
 
           {recipe?.Preparation.map((item) => (
-            <View className="flex flex-row gap-4 items-center mb-3 border-b border-sage-light">
+            <View
+              key={item.id}
+              className="flex flex-row gap-4 items-center mb-3 border-b border-sage-light"
+            >
               <View className="bg-primary h-10 w-10 rounded-full items-center justify-center">
                 <Text className="text-background font-button text-lg">
                   {item.id}
@@ -145,4 +148,4 @@ const details = () => {
   );
 };
 
-export default details;
+export default RecipeDetails;
