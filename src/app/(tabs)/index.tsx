@@ -13,15 +13,29 @@ import QuickCategories from "../../../components/QuickCategories";
 import ReciepeCard from "../../../components/ReciepeCard";
 import SearchBar from "../../../components/SearchBar";
 
+import { useState } from "react";
 import { reciepeDetails } from "../../../constants/data";
 import image from "../../../constants/image";
 
 const Tabindex = () => {
+  const [searchText, setSearchText] = useState("");
+
+  // const filteredRecipes = reciepeDetails.filter((item) => {
+  //   const matchesSearch = item.name
+  //     .toLowerCase()
+  //     .includes(searchText.toLowerCase());
+
+  //   return matchesSearch;
+  // });
+
+  const randomRecipes = [...reciepeDetails]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 2);
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <FlatList
-          data={reciepeDetails.slice(0, 2)}
+          data={randomRecipes}
           renderItem={({ item }) => <ReciepeCard {...item} />}
           keyExtractor={(item) => item.id}
           numColumns={2}
@@ -51,7 +65,7 @@ const Tabindex = () => {
               </Text>
 
               <View>
-                <SearchBar />
+                <SearchBar value={searchText} onChangeText={setSearchText} />
               </View>
 
               <View>

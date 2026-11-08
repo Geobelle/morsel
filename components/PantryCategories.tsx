@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 const category = [
@@ -8,20 +7,25 @@ const category = [
   { name: "Frozen", id: "frozen" },
   { name: "Others", id: "others" },
 ];
+interface PantryCategoryProps {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+}
 
-const PantryCategory = () => {
-  const [specificCategory, setSpecificCategory] = useState("all");
-
+const PantryCategory = ({
+  selectedCategory,
+  onSelectCategory,
+}: PantryCategoryProps) => {
   return (
     <View className="my-6">
       <FlatList
         data={category}
         renderItem={({ item }) => {
-          const isSelected = specificCategory === item.id;
+          const isSelected = selectedCategory === item.id;
 
           return (
             <Pressable
-              onPress={() => setSpecificCategory(item.id)}
+              onPress={() => onSelectCategory(item.id)}
               className={`mx-2 px-4 py-2 rounded-2xl ${
                 isSelected ? "bg-primary-dark" : "bg-sage-light"
               }`}

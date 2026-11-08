@@ -1,4 +1,5 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReciepeInfoCard from "../../../components/ReciepeInfoCard";
@@ -7,15 +8,41 @@ import SearchBar from "../../../components/SearchBar";
 import { reciepeDetails } from "../../../constants/data";
 
 const Recipe = () => {
+  const { category } = useLocalSearchParams<{ category?: string }>();
+  const [searchText, setSearchText] = useState("");
+
+  const [specificCategory, setSpecificCategory] = useState(
+    category?.toLowerCase() || "all",
+  );
+
+  useEffect(() => {
+    setSpecificCategory(category?.toLowerCase() || "all");
+  }, [category]);
+
+  const filteredRecipes = reciepeDetails.filter((item) => {
+    const matchesCategory =
+      specificCategory === "all" ||
+      item.category.toLowerCase() === specificCategory;
+
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <Text className="text-primary-dark font-heading text-3xl">
         My Recipes
       </Text>
-      <RecipeCategory />
+      <RecipeCategory
+        selectedCategory={specificCategory}
+        onSelectCategory={setSpecificCategory}
+      />
       <View className="flex flex-row justify-between items-center">
         <View className="w-[82%]">
-          <SearchBar />
+          <SearchBar value={searchText} onChangeText={setSearchText} />
         </View>
 
         <Pressable
@@ -29,10 +56,10 @@ const Recipe = () => {
       </View>
       <View className="mt-4 mb-60">
         <FlatList
-          data={reciepeDetails}
+          data={filteredRecipes}
           renderItem={({ item }) => <ReciepeInfoCard {...item} />}
           keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <Text className="home-empty-state">No recipes yet</Text>
           }

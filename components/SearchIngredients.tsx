@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 import { icons } from "../constants/icons";
 
-const SearchIngredients = () => {
+interface PantrySearchProps {
+  value: string;
+  onChangeText: (text: string) => void;
+}
+
+const SearchIngredients = ({ value, onChangeText }: PantrySearchProps) => {
   const [text, setText] = useState("");
 
   return (
@@ -11,8 +16,8 @@ const SearchIngredients = () => {
 
       <TextInput
         style={styles.input}
-        onChangeText={setText}
-        value={text}
+        value={value}
+        onChangeText={onChangeText}
         placeholder="Search ingredients..."
         placeholderTextColor="#B7B7B7"
       />

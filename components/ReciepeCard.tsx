@@ -1,11 +1,24 @@
-import { Image, Text, useWindowDimensions, View } from "react-native";
+import { router } from "expo-router";
+import {
+  Image,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 
 const ReciepeCard = ({ id, name, time, image }: ReciepeCard) => {
   const { width } = useWindowDimensions();
   const cardWidth = (width - 40) / 2;
 
   return (
-    <View
+    <Pressable
+      onPress={() => {
+        router.push({
+          pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
+          params: { id },
+        });
+      }}
       style={{ width: cardWidth }}
       className="bg-white rounded-3xl border border-sage-light overflow-hidden"
     >
@@ -27,7 +40,7 @@ const ReciepeCard = ({ id, name, time, image }: ReciepeCard) => {
 
         <Text className="text-sm text-primary font-body">{time}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

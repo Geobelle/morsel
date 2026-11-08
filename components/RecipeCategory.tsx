@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 const category = [
@@ -11,19 +10,25 @@ const category = [
   { name: "Drinks", id: "drinks" },
 ];
 
-const RecipeCategory = () => {
-  const [specificCategory, setSpecificCategory] = useState("all");
+interface RecipeCategoryProps {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+}
 
+const RecipeCategory = ({
+  selectedCategory,
+  onSelectCategory,
+}: RecipeCategoryProps) => {
   return (
     <View className="mt-6">
       <FlatList
         data={category}
         renderItem={({ item }) => {
-          const isSelected = specificCategory === item.id;
+          const isSelected = selectedCategory === item.id;
 
           return (
             <Pressable
-              onPress={() => setSpecificCategory(item.id)}
+              onPress={() => onSelectCategory(item.id)}
               className={`mx-2 px-4 py-2 rounded-2xl ${
                 isSelected ? "bg-primary-dark" : "bg-sage-light"
               }`}

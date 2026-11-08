@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import { useState } from "react";
 import { FlatList, Keyboard, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PantryCard from "../../../components/PantryCard";
@@ -7,6 +8,20 @@ import SearchIngredients from "../../../components/SearchIngredients";
 import { pantryItems } from "../../../constants/data";
 
 const Pantry = () => {
+  const [specificCategory, setSpecificCategory] = useState("all");
+  const [searchText, setSearchText] = useState("");
+
+  const filteredPantryItems = pantryItems.filter((item) => {
+    const matchesCategory =
+      specificCategory === "all" ||
+      item.category.toLowerCase() === specificCategory;
+
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View className="flex-1">
@@ -17,7 +32,10 @@ const Pantry = () => {
 
           <View className="flex flex-row justify-between items-center">
             <View className="w-[82%]">
-              <SearchIngredients />
+              <SearchIngredients
+                value={searchText}
+                onChangeText={setSearchText}
+              />
             </View>
 
             <Pressable
@@ -32,10 +50,13 @@ const Pantry = () => {
             </Pressable>
           </View>
 
-          <PantryCategory />
+          <PantryCategory
+            selectedCategory={specificCategory}
+            onSelectCategory={setSpecificCategory}
+          />
         </Pressable>
         <FlatList
-          data={pantryItems}
+          data={filteredPantryItems}
           renderItem={({ item }) => <PantryCard {...item} />}
           keyExtractor={(item) => String(item.id)}
           numColumns={3}

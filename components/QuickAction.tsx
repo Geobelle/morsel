@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { icons } from "../constants/icons";
 
@@ -25,7 +26,12 @@ const QuickAction = () => {
         <Text className="font-recipe-title text-primary-dark"> Plan Meals</Text>
       </Pressable>
 
-      <Pressable className=" px-4 py-6 gap-4 items-center bg-sage-light w-[31.5%] rounded-lg">
+      <Pressable
+        onPress={() => {
+          router.push("/(pantryItems)/addPantryItem");
+        }}
+        className=" px-4 py-6 gap-4 items-center bg-sage-light w-[31.5%] rounded-lg"
+      >
         <Image
           source={icons.ingredients}
           style={{ width: 24, height: 24 }}

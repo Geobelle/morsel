@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { pantryItems, reciepeDetails } from "../../../constants/data";
@@ -58,6 +59,9 @@ const Profile = () => {
         >
           <Pressable
             accessibilityRole="button"
+            onPress={() => {
+              router.push("/shoppingList");
+            }}
             className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light  `}
           >
             <View className="flex-row items-center gap-3">
@@ -115,6 +119,9 @@ const Profile = () => {
           <Pressable
             accessibilityRole="button"
             className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light `}
+            onPress={() => {
+              router.push("/(pantryItems)/addPantryItem");
+            }}
           >
             <View className="flex-row items-center gap-3">
               <Image
@@ -127,7 +134,7 @@ const Profile = () => {
               />
 
               <Text className="font-recipe-title text-primary-dark">
-                Add Ingredients
+                Add Pantry Item
               </Text>
             </View>
             <Image

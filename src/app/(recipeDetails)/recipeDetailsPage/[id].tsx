@@ -52,7 +52,7 @@ const RecipeDetails = () => {
                   params: { id },
                 });
               }}
-              className="bg-sage-light rounded-full px-3 py-2"
+              className="bg-sage-light rounded-full px-3 py-2 flex items-center justify-center"
             >
               <Text className="font-body text-primary-dark">✎ Edit</Text>
             </Pressable>

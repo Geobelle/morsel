@@ -1,18 +1,20 @@
-import { useState } from "react";
 import { Image, StyleSheet, TextInput, View } from "react-native";
 import { icons } from "../constants/icons";
 
-const SearchBar = () => {
-  const [text, setText] = useState("");
+interface RecipeSearchProps {
+  value: string;
+  onChangeText: (text: string) => void;
+}
 
+const SearchBar = ({ value, onChangeText }: RecipeSearchProps) => {
   return (
     <View style={styles.container}>
       <Image source={icons.search} style={styles.icon} resizeMode="contain" />
 
       <TextInput
         style={styles.input}
-        onChangeText={setText}
-        value={text}
+        onChangeText={onChangeText}
+        value={value}
         placeholder="Search your recipes..."
         placeholderTextColor="#B7B7B7"
       />
