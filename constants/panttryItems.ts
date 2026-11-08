@@ -11,6 +11,7 @@ import palmOil from "@/assets/morsel pantry/palm-oil.jpg";
 import pepper from "@/assets/morsel pantry/pepper.jpg";
 import plantain from "@/assets/morsel pantry/plantain.jpg";
 import rice from "@/assets/morsel pantry/rice.jpg";
+import salt from "@/assets/morsel pantry/salt.jpg";
 import tomatoes from "@/assets/morsel pantry/tomatoes.jpg";
 import ugu from "@/assets/morsel pantry/ugu.jpg";
 import zoboLeaf from "@/assets/morsel pantry/zobo-leaves.jpg";
@@ -32,4 +33,5 @@ export default {
   tomatoes,
   ugu,
   zoboLeaf,
+  salt,
 };

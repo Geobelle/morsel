@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, useIsFocused } from "expo-router";
 import { useState } from "react";
 import {
   Image,
@@ -12,7 +12,9 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BottomDrawer from "../../../components/BottomDrawer";
 import CategoryDropDown from "../../../components/CategoryDropdown";
+import ImagePickerComponent from "../../../components/ImagePicker";
 import IngredientsFields from "../../../components/IngredientsFields";
 import InstructionsField from "../../../components/InstructionsField";
 import { icons } from "../../../constants/icons";
@@ -84,6 +86,11 @@ const AddRecipe = () => {
     setIngredients((prev) => prev.filter((step) => step.id !== id));
   };
 
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const isFocused = useIsFocused();
+
   return (
     <SafeAreaView className="flex-1 p-6 bg-background">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -111,21 +118,46 @@ const AddRecipe = () => {
               </Text>
             </View>
 
-            <View className="my-6 border border-dashed border-primary w-full h-[220px] rounded-xl flex items-center justify-center">
-              <Text className="mb-2 text-primary-dark font-button text-xl">
-                Add a photo
-              </Text>
-              <View className="bg-sage-light p-6 rounded-full">
+            <Pressable
+              onPress={() => setShowDrawer(true)}
+              className="my-6 border border-dashed border-primary w-full h-[220px] rounded-xl flex items-center justify-center"
+            >
+              {selectedImage ? (
                 <Image
-                  source={image.camera}
-                  style={{
-                    width: 60,
-                    height: 60,
-                  }}
-                  resizeMode="contain"
+                  source={{ uri: selectedImage }}
+                  className="w-full h-full"
+                  resizeMode="cover"
                 />
-              </View>
-            </View>
+              ) : (
+                <>
+                  <Text className="mb-2 text-primary-dark font-button text-xl">
+                    Add a photo
+                  </Text>
+
+                  <View className="bg-sage-light p-6 rounded-full">
+                    <Image
+                      source={image.camera}
+                      style={{ width: 60, height: 60 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </>
+              )}
+            </Pressable>
+
+            {isFocused && showDrawer && (
+              <BottomDrawer
+                visible={showDrawer}
+                onClose={() => setShowDrawer(false)}
+              >
+                <ImagePickerComponent
+                  onImageSelected={(uri) => {
+                    setSelectedImage(uri);
+                    setShowDrawer(false);
+                  }}
+                />
+              </BottomDrawer>
+            )}
 
             <View>
               <Text className="mb-2 text-primary-dark font-button text-xl">

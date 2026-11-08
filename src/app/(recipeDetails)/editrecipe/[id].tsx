@@ -106,10 +106,7 @@ const EditRecipe = () => {
             <View className="flex mb-6 flex-row relative items-center">
               <Pressable
                 onPress={() => {
-                  router.push({
-                    pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
-                    params: { id },
-                  });
+                  router.back();
                 }}
                 className="bg-sage-light rounded-full p-3 z-50"
               >

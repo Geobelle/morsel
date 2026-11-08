@@ -1,9 +1,28 @@
-import { Image, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Image, Pressable, Text, View } from "react-native";
 
-const ExactMatches = ({ name, time, image }: ReciepeCard) => {
+type ExactMatchesProps = ReciepeCard & {
+  availableIngredients: number;
+  totalIngredients: number;
+};
+
+const ExactMatches = ({
+  name,
+  time,
+  image,
+  id,
+  availableIngredients,
+  totalIngredients,
+}: ExactMatchesProps) => {
   return (
-    <View
+    <Pressable
       //   style={{ width: }}
+      onPress={() => {
+        router.push({
+          pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
+          params: { id },
+        });
+      }}
       className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
       <Image
@@ -26,11 +45,12 @@ const ExactMatches = ({ name, time, image }: ReciepeCard) => {
         </Text>
 
         <Text className="text-sm text-foreground font-body">{time}</Text>
+
         <Text className="text-sm text-foreground font-body">
-          Number of ingredients
+          {availableIngredients} of {totalIngredients} ingredients available
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

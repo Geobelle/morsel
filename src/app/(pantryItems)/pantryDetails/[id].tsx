@@ -14,7 +14,7 @@ const PantryDetails = () => {
         <View className="flex mb-4 flex-row relative items-start">
           <Pressable
             onPress={() => {
-              router.push("/(tabs)/pantry");
+              router.back();
             }}
             className="bg-sage-light rounded-full p-3 z-50"
           >

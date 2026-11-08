@@ -5,14 +5,18 @@ import { icons } from "../constants/icons";
 const QuickAction = () => {
   return (
     <View className="flex gap-4 flex-row w-full justify-center mt-6">
-      <Pressable className=" px-4 py-6 gap-4 items-center bg-sage-light w-[31.5%] rounded-lg">
+      <Pressable
+        onPress={() => {
+          router.push("/shoppingList");
+        }}
+        className=" px-4 py-6 gap-4 items-center bg-sage-light w-[31.5%] rounded-lg"
+      >
         <Image
           source={icons.list}
           style={{ width: 24, height: 24 }}
           resizeMode="contain"
         />
         <Text className="font-recipe-title text-primary-dark">
-          {" "}
           Shopping List
         </Text>
       </Pressable>

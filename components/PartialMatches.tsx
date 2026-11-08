@@ -1,9 +1,29 @@
-import { Image, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Image, Pressable, Text, View } from "react-native";
 
-const PartialMatches = ({ name, time, image }: ReciepeCard) => {
+type PartialMatchesProps = ReciepeCard & {
+  availableIngredients: number;
+  totalIngredients: number;
+};
+
+const PartialMatches = ({
+  name,
+  time,
+  image,
+  availableIngredients,
+  totalIngredients,
+  id,
+}: PartialMatchesProps) => {
   return (
-    <View
+    <Pressable
       //   style={{ width: }}
+      onPress={() => {
+        router.push({
+          pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
+          params: { id },
+        });
+      }}
+
       className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
       <Image
@@ -12,25 +32,25 @@ const PartialMatches = ({ name, time, image }: ReciepeCard) => {
         resizeMode="cover"
       />
 
-      {/* Recipe details */}
       <View className="p-2 w-2/3">
         <View className="flex items-end justify-end w-full">
-          <Text className="text-2xl ">...</Text>
+          <Text className="text-2xl">...</Text>
         </View>
 
         <Text
-          className="font-recipe-title text-primary-dark text-lg "
+          className="font-recipe-title text-primary-dark text-lg"
           numberOfLines={1}
         >
           {name}
         </Text>
 
         <Text className="text-sm text-foreground font-body">{time}</Text>
+
         <Text className="text-sm text-foreground font-body">
-          Number of ingredients
+          {availableIngredients} of {totalIngredients} ingredients available
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
