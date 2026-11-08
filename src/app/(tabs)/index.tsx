@@ -1,7 +1,9 @@
+import { router } from "expo-router";
 import {
   FlatList,
   Image,
   Keyboard,
+  Pressable,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -53,11 +55,17 @@ const Tabindex = () => {
                   Good Morning Gina 👋
                 </Text>
 
-                <Image
-                  source={image.profileImage}
-                  style={{ width: 36, height: 36 }}
-                  resizeMode="contain"
-                />
+                <Pressable
+                  onPress={() => {
+                    router.push("/(tabs)/profile");
+                  }}
+                >
+                  <Image
+                    source={image.profileImage}
+                    style={{ width: 36, height: 36 }}
+                    resizeMode="contain"
+                  />
+                </Pressable>
               </View>
 
               <Text className="text-primary-dark font-recipe-title text-xl mt-2">
