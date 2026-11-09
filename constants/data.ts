@@ -1025,7 +1025,7 @@ export const pantryItems: pantryitem[] = [
   },
   {
     name: "salt",
-    id: "15",
+    id: "17",
     image: panttryItems.salt,
     quantity: 1,
     category: "others",
@@ -1035,3 +1035,57 @@ export const pantryItems: pantryitem[] = [
 
 export const exactRecipe: ReciepeDetails[] = [];
 export const partialRecipe: ReciepeDetails[] = [];
+export const optionalItems: pantryitem[] = [
+  {
+    name: "milk",
+    id: "18",
+    image: {},
+    quantity: 2,
+    category: "",
+    unit: "bottles",
+  },
+  {
+    name: "sugar",
+    id: "19",
+    image: {},
+    quantity: 1,
+    category: "",
+    unit: "kg",
+  },
+
+  {
+    name: "butter",
+    id: "20",
+    image: {},
+    quantity: 1,
+    category: "",
+    unit: "g",
+  },
+];
+export const toBuyList: pantryitem[] = [
+  {
+    name: "bread",
+    id: "21",
+    image: {},
+    quantity: 4,
+    category: "",
+    unit: "bags",
+  },
+  {
+    name: "carrot",
+    id: "22",
+    image: {},
+    quantity: 1,
+    category: "",
+    unit: "kg",
+  },
+
+  {
+    name: "curry",
+    id: "23",
+    image: {},
+    quantity: 1,
+    category: "",
+    unit: "g",
+  },
+];

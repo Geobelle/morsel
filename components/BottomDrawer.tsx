@@ -9,7 +9,7 @@ type BottomDrawerProps = {
 
 const BottomDrawer = ({ children, visible, onClose }: BottomDrawerProps) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["30%"], []);
+  const snapPoints = useMemo(() => ["42%"], []);
 
   useEffect(() => {
     if (visible) {
@@ -30,11 +30,14 @@ const BottomDrawer = ({ children, visible, onClose }: BottomDrawerProps) => {
       onDismiss={() => {
         onClose();
       }}
+      keyboardBehavior="interactive"
+      keyboardBlurBehavior="restore"
+      android_keyboardInputMode="adjustResize"
 
       backgroundStyle={{
         backgroundColor: "#FBFCFB",
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
+        borderTopLeftRadius: 60,
+        borderTopRightRadius: 60,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.08,

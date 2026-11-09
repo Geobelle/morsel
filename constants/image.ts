@@ -1,4 +1,5 @@
 import profileImage from "@/assets/images/Group 5.png";
+import shoppingSticker from "@/assets/images/Pastel Grocery Tote Sticker.png";
 import add from "@/assets/images/add.png";
 import breakfast from "@/assets/images/breakfast.png";
 import camera from "@/assets/images/camera.png";
@@ -32,4 +33,5 @@ export default {
   add,
   deleteOption,
   catergotyIcon,
+  shoppingSticker,
 };
