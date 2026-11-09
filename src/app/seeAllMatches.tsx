@@ -29,7 +29,6 @@ const SeeAllMatches = () => {
           style={{ width: 22, height: 22 }}
           resizeMode="contain"
         />
-        <Text className="font-body text-primary-dark ml-2">Back</Text>
       </Pressable>
 
       <Text className="font-heading text-3xl text-primary-dark">
