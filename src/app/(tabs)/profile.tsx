@@ -91,6 +91,9 @@ const Profile = () => {
           <Pressable
             accessibilityRole="button"
             className={`my-2  flex-row justify-between items-center p-4 gap-3 border-b-2 border-sage-light  `}
+            onPress={() => {
+              router.push("/planMeals");
+            }}
           >
             <View className="flex-row items-center gap-3">
               <Image
