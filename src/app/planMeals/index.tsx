@@ -1,10 +1,29 @@
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MealCalendar from "../../../components/MealCalender";
 import { icons } from "../../../constants/icons";
 
 const planPage = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const getDateKey = (date: Date) => {
+    const day = date.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+
+    const month = date.toLocaleDateString("en-US", {
+      month: "short",
+    });
+
+    const dayNumber = String(date.getDate()).padStart(2, "0");
+
+    return ` ${day}, ${month} ${dayNumber}`;
+  };
+
+  // rest of your component
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <ScrollView>
@@ -34,6 +53,7 @@ const planPage = () => {
             <MealCalendar
               plannedDates={["2026-11-11", "2026-11-12", "2026-11-14"]}
               onDateChange={(date) => {
+                setSelectedDate(date);
                 console.log("Selected date:", date);
               }}
             />
@@ -53,23 +73,80 @@ const planPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Breakfast
             </Text>
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/SelectRecipe",
+                  params: {
+                    date: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+            >
+              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+
+              <Text className=" text-primary-dark font-button text-lg">
+                Add Meal
+              </Text>
+            </Pressable>
           </View>
 
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Lunch
             </Text>
+            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+
+              <Text className=" text-primary-dark font-button text-lg">
+                Add Meal
+              </Text>
+            </Pressable>
           </View>
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Dinner
             </Text>
+            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+
+              <Text className=" text-primary-dark font-button text-lg">
+                Add Meal
+              </Text>
+            </Pressable>
           </View>
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Snacks
             </Text>
+            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+
+              <Text className=" text-primary-dark font-button text-lg">
+                Add Meal
+              </Text>
+            </Pressable>
           </View>
+
+          <View>
+            <Text className="text-foreground font-recipe-title text-xl">
+              Drinks
+            </Text>
+            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+
+              <Text className=" text-primary-dark font-button text-lg">
+                Add Meal
+              </Text>
+            </Pressable>
+          </View>
+
+          <Pressable className="bg-primary-dark py-4  items-center rounded-full mt-6">
+            <Text className="text-xl font-button text-background">
+              Generate Shopping List
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>

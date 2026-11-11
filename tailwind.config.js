@@ -23,7 +23,7 @@ module.exports = {
         primary: "#8FB89A",
         "primary-dark": "#53765B",
         "sage-light": "#EBEFE3",
-        cream: "#F7E9D8",
+        cream: "#FCF4F1",
         foreground: "#493F38",
       },
     },
