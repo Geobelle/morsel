@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -58,14 +59,7 @@ const RecipeDetails = () => {
             </Pressable>
 
             <Pressable className="bg-red-300 rounded-full flex items-center  px-3 py-3">
-              <Image
-                source={image.deleteOption}
-                style={{
-                  width: 20,
-                  height: 20,
-                }}
-                resizeMode="contain"
-              />
+              <Ionicons name="trash-outline" size={24} color={"#B91C1C"} />
             </Pressable>
           </View>
         </View>

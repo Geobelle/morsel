@@ -62,7 +62,17 @@ const planPage = () => {
             <Text className="font-ingredient text-lg text-foreground">
               Planned meals
             </Text>
-            <Pressable className="p-2 border border-primary shadow-md rounded-full">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/(viewDay)/[id]",
+                  params: {
+                    id: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="p-2 border border-primary shadow-md rounded-full"
+            >
               <Text className="font-ingredient text-lg text-primary-dark">
                 View day
               </Text>
@@ -96,7 +106,17 @@ const planPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Lunch
             </Text>
-            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/SelectRecipe",
+                  params: {
+                    date: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+            >
               <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
               <Text className=" text-primary-dark font-button text-lg">
@@ -108,7 +128,17 @@ const planPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Dinner
             </Text>
-            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/SelectRecipe",
+                  params: {
+                    date: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+            >
               <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
               <Text className=" text-primary-dark font-button text-lg">
@@ -120,7 +150,17 @@ const planPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Snacks
             </Text>
-            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/SelectRecipe",
+                  params: {
+                    date: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+            >
               <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
               <Text className=" text-primary-dark font-button text-lg">
@@ -133,7 +173,17 @@ const planPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Drinks
             </Text>
-            <Pressable className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center">
+            <Pressable
+              onPress={() => {
+                router.push({
+                  pathname: "/planMeals/SelectRecipe",
+                  params: {
+                    date: getDateKey(selectedDate),
+                  },
+                });
+              }}
+              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+            >
               <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
               <Text className=" text-primary-dark font-button text-lg">

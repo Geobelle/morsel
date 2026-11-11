@@ -157,8 +157,8 @@ const EditPantryItem = () => {
                 Save changes
               </Text>
             </Pressable>
-            <Pressable className=" border-2 border-primary-dark py-4  items-center rounded-full mt-4">
-              <Text className="text-xl font-button text-primary-dark">
+            <Pressable className=" border-2 border-red-500 py-4  items-center rounded-full mt-4">
+              <Text className="text-xl font-button text-red-500">
                 Delete items
               </Text>
             </Pressable>

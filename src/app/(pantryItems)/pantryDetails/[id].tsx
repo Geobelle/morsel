@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -72,7 +73,7 @@ const PantryDetails = () => {
         </View>
 
         <Pressable
-          className=" border-2 border-primary-dark py-4  items-center rounded-full mt-4"
+          className=" border-2 border-primary-dark py-4   items-center rounded-full mt-4"
           onPress={() => {
             router.push({
               pathname: "/(pantryItems)/editPantryItem/[id]",
@@ -81,11 +82,12 @@ const PantryDetails = () => {
           }}
         >
           <Text className="text-xl font-button text-primary-dark">
-            ✎ Edit item
+            Edit item
           </Text>
         </Pressable>
 
-        <Pressable className="  items-center  mt-4">
+        <Pressable className="  items-center flex-row justify-center gap-2  mt-4">
+          <Ionicons name="trash-outline" size={24} color={"#EF4444"} />
           <Text className="text-xl font-button text-red-500">
             Delete from pantry
           </Text>
