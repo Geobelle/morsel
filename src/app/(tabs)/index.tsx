@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import { useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -19,9 +20,9 @@ const Tabindex = () => {
   //   return matchesSearch;
   // });
 
-  const randomRecipes = [...reciepeDetails]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 2);
+  const [randomRecipes] = useState(() =>
+    [...reciepeDetails].sort(() => Math.random() - 0.5).slice(0, 2),
+  );
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <FlatList

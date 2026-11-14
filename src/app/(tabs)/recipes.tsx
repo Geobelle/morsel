@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReciepeInfoCard from "../../../components/ReciepeInfoCard";
@@ -14,10 +14,6 @@ const Recipe = () => {
   const [specificCategory, setSpecificCategory] = useState(
     category?.toLowerCase() || "all",
   );
-
-  useEffect(() => {
-    setSpecificCategory(category?.toLowerCase() || "all");
-  }, [category]);
 
   const filteredRecipes = reciepeDetails.filter((item) => {
     const matchesCategory =

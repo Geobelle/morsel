@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeCategory from "../../../components/RecipeCategory";
@@ -12,18 +12,14 @@ const SelectRecipe = () => {
   const { category } = useLocalSearchParams<{ category?: string }>();
   const [searchText, setSearchText] = useState("");
 
-  const [specificCategory, setSpecificCategory] = useState(
+  const [selectedCategory, setSelectedCategory] = useState(
     category?.toLowerCase() || "all",
   );
 
-  useEffect(() => {
-    setSpecificCategory(category?.toLowerCase() || "all");
-  }, [category]);
-
   const filteredRecipes = reciepeDetails.filter((item) => {
     const matchesCategory =
-      specificCategory === "all" ||
-      item.category.toLowerCase() === specificCategory;
+      selectedCategory === "all" ||
+      item.category.toLowerCase() === selectedCategory;
 
     const matchesSearch = item.name
       .toLowerCase()
@@ -56,8 +52,8 @@ const SelectRecipe = () => {
           </Text>
         </View>
         <RecipeCategory
-          selectedCategory={specificCategory}
-          onSelectCategory={setSpecificCategory}
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
 
         <View className="">

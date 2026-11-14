@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MealCalendar from "../../../components/MealCalender";
 import { icons } from "../../../constants/icons";
 
-const planPage = () => {
+const PlanPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const getDateKey = (date: Date) => {
@@ -86,7 +86,7 @@ const planPage = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: getDateKey(selectedDate),
                   },
@@ -109,7 +109,7 @@ const planPage = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: getDateKey(selectedDate),
                   },
@@ -131,7 +131,7 @@ const planPage = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: getDateKey(selectedDate),
                   },
@@ -153,7 +153,7 @@ const planPage = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: getDateKey(selectedDate),
                   },
@@ -176,7 +176,7 @@ const planPage = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: getDateKey(selectedDate),
                   },
@@ -203,4 +203,4 @@ const planPage = () => {
   );
 };
 
-export default planPage;
+export default PlanPage;

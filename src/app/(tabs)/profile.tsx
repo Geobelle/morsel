@@ -1,4 +1,6 @@
-import { router } from "expo-router";
+import { router, type Href } from "expo-router";
+import { useClerk, useUser } from "@clerk/expo";
+import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { pantryItems, reciepeDetails } from "../../../constants/data";
@@ -6,6 +8,20 @@ import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
 const Profile = () => {
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const [signOutError, setSignOutError] = useState("");
+
+  const handleSignOut = async () => {
+    setSignOutError("");
+    try {
+      await signOut();
+      router.replace("/(auth)/sign-in" as Href);
+    } catch {
+      setSignOutError("We couldn’t sign you out just now. Please try again.");
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View>
@@ -18,10 +34,10 @@ const Profile = () => {
           />
           <View>
             <Text className="text-primary-dark font-recipe-title text-xl">
-              Gina
+              {user?.fullName || user?.firstName || "Morsel cook"}
             </Text>
             <Text className="text-foreground font-ingredient">
-              gina@yahoo.com
+              {user?.primaryEmailAddress?.emailAddress || "Your account"}
             </Text>
           </View>
         </View>
@@ -204,6 +220,21 @@ const Profile = () => {
               }}
               resizeMode="contain"
             />
+          </Pressable>
+        </View>
+
+        <View className="mt-8">
+          {signOutError ? (
+            <Text accessibilityRole="alert" className="mb-3 font-body text-sm text-red-700">
+              {signOutError}
+            </Text>
+          ) : null}
+          <Pressable
+            accessibilityRole="button"
+            onPress={handleSignOut}
+            className="min-h-14 items-center justify-center rounded-full border border-primary"
+          >
+            <Text className="font-button text-base text-primary-dark">Sign out</Text>
           </Pressable>
         </View>
       </View>

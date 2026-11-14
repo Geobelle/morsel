@@ -10,7 +10,7 @@ import { optionalItems, toBuyList } from "../../constants/data";
 import { icons } from "../../constants/icons";
 import image from "../../constants/image";
 
-const shoppingList = () => {
+const ShoppingList = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const isFocused = useIsFocused();
   return (
@@ -130,4 +130,4 @@ const shoppingList = () => {
   );
 };
 
-export default shoppingList;
+export default ShoppingList;

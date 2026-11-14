@@ -16,7 +16,7 @@ import SearchBar from "../../components/SearchBar";
 import { pantryItems, reciepeDetails } from "../../constants/data";
 import { icons } from "../../constants/icons";
 
-const search = () => {
+const Search = () => {
   const [searchText, setSearchText] = useState("");
 
   const filteredPantryItems = pantryItems.filter((item) => {
@@ -89,4 +89,4 @@ const search = () => {
   );
 };
 
-export default search;
+export default Search;

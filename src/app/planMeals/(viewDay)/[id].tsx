@@ -38,7 +38,7 @@ const ViewDay = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: id,
                   },
@@ -61,7 +61,7 @@ const ViewDay = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: id,
                   },
@@ -83,7 +83,7 @@ const ViewDay = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: id,
                   },
@@ -105,7 +105,7 @@ const ViewDay = () => {
             <Pressable
               onPress={() => {
                 router.push({
-                  pathname: "/planMeals/SelectRecipe",
+                  pathname: "/planMeals/selectRecipe",
                   params: {
                     date: id,
                   },

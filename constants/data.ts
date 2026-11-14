@@ -1044,23 +1044,23 @@ export const optionalItems: pantryitem[] = [
     category: "",
     unit: "bottles",
   },
-  {
-    name: "sugar",
-    id: "19",
-    image: {},
-    quantity: 1,
-    category: "",
-    unit: "kg",
-  },
+  // {
+  //   name: "sugar",
+  //   id: "19",
+  //   image: {},
+  //   quantity: 1,
+  //   category: "",
+  //   unit: "kg",
+  // },
 
-  {
-    name: "butter",
-    id: "20",
-    image: {},
-    quantity: 1,
-    category: "",
-    unit: "g",
-  },
+  // {
+  //   name: "butter",
+  //   id: "20",
+  //   image: {},
+  //   quantity: 1,
+  //   category: "",
+  //   unit: "g",
+  // },
 ];
 export const toBuyList: pantryitem[] = [
   {
