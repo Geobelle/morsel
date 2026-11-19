@@ -1,3 +1,4 @@
+import { useApi } from "@/lib/api";
 import { useAuth, useSignUp } from "@clerk/expo";
 import { router, type Href } from "expo-router";
 import { useState } from "react";
@@ -14,7 +15,8 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function SignUpScreen() {
   const { signUp, errors, fetchStatus } = useSignUp();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, userId } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,8 +26,15 @@ export default function SignUpScreen() {
   const [sent, setSent] = useState(false);
   const busy = fetchStatus === "fetching";
 
+  const { request } = useApi();
+
   const beginSignUp = async () => {
     setFormError("");
+    const nameParts = name.trim().split(/\s+/);
+    if (!nameParts[0]) {
+      setFormError("Enter your name to continue.");
+      return;
+    }
     const normalizedEmail = email.trim().toLowerCase();
     if (!emailPattern.test(normalizedEmail)) {
       setFormError("Enter a valid email address to continue.");
@@ -44,9 +53,13 @@ export default function SignUpScreen() {
       const { error } = await signUp.password({
         emailAddress: normalizedEmail,
         password,
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(" "),
       });
       if (error) {
-        setFormError(error.message || "We couldn’t create your account. Try again.");
+        setFormError(
+          error.message || "We couldn’t create your account. Try again.",
+        );
         return;
       }
       const { error: verificationError } =
@@ -60,32 +73,60 @@ export default function SignUpScreen() {
       setIsVerifying(true);
       setSent(true);
     } catch {
-      setFormError("We couldn’t complete that just now. Check your connection and try again.");
+      setFormError(
+        "We couldn’t complete that just now. Check your connection and try again.",
+      );
     }
   };
 
   const verifyEmail = async () => {
     setFormError("");
+
     if (!/^\d{6}$/.test(code.trim())) {
       setFormError("Enter the 6-digit code from your email.");
       return;
     }
+
     try {
       const { error } = await signUp.verifications.verifyEmailCode({
         code: code.trim(),
       });
+
       if (error) {
-        setFormError(error.message || "That code didn’t work. Check it and try again.");
+        setFormError(error.message || "Verification failed.");
         return;
       }
+
       if (signUp.status === "complete") {
+        const clerkId = signUp.createdUserId;
+
+        console.log("Clerk user ID:", clerkId);
+
+        if (!clerkId) {
+          throw new Error("Clerk user ID is missing.");
+        }
+
         await signUp.finalize();
+
+        const data = await request("/api/auth/signUp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim().toLowerCase(),
+            clerkId,
+            name: name,
+          }),
+        });
+
         router.replace("/(tabs)" as Href);
-      } else {
-        setFormError("There are a few more details needed to finish your account.");
       }
-    } catch {
-      setFormError("We couldn’t verify that code just now. Please try again.");
+    } catch (err) {
+      console.error("Signup error:", err);
+      setFormError(
+        err instanceof Error ? err.message : "Something went wrong.",
+      );
     }
   };
 
@@ -120,7 +161,9 @@ export default function SignUpScreen() {
               label="Email verification code"
               placeholder="000000"
               value={code}
-              onChangeText={(value) => setCode(value.replace(/\D/g, "").slice(0, 6))}
+              onChangeText={(value) =>
+                setCode(value.replace(/\D/g, "").slice(0, 6))
+              }
               keyboardType="number-pad"
               textContentType="oneTimeCode"
               autoComplete="sms-otp"
@@ -131,17 +174,34 @@ export default function SignUpScreen() {
             />
             {sent ? (
               <Text className="mb-4 font-body text-sm leading-5 text-foreground">
-                It can take a minute to arrive. Check your spam folder if you don’t see it.
+                It can take a minute to arrive. Check your spam folder if you
+                don’t see it.
               </Text>
             ) : null}
-            <AuthButton title="Verify email" onPress={verifyEmail} loading={busy} />
+            <AuthButton
+              title="Verify email"
+              onPress={verifyEmail}
+              loading={busy}
+            />
             <View className="mt-5 flex-row justify-center gap-1">
-              <Text className="font-body text-sm text-foreground">No code yet?</Text>
+              <Text className="font-body text-sm text-foreground">
+                No code yet?
+              </Text>
               <AuthLink label="Send a new one" action={resendCode} />
             </View>
           </>
         ) : (
           <>
+            <AuthField
+              label="Name"
+              placeholder="Your name"
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="words"
+              autoComplete="name"
+              textContentType="name"
+              returnKeyType="next"
+            />
             <AuthField
               label="Email address"
               placeholder="you@example.com"
@@ -179,12 +239,22 @@ export default function SignUpScreen() {
               onSubmitEditing={beginSignUp}
             />
             <Text className="mb-5 font-body text-xs leading-5 text-foreground opacity-75">
-              We’ll use your email to confirm your account and help keep it secure.
+              We’ll use your email to confirm your account and help keep it
+              secure.
             </Text>
-            <AuthButton title="Create my account" onPress={beginSignUp} loading={busy} />
+            <AuthButton
+              title="Create my account"
+              onPress={beginSignUp}
+              loading={busy}
+            />
             <View className="mt-6 flex-row justify-center gap-1">
-              <Text className="font-body text-sm text-foreground">Already have an account?</Text>
-              <AuthLink label="Sign in" action={() => router.push("/(auth)/sign-in" as Href)} />
+              <Text className="font-body text-sm text-foreground">
+                Already have an account?
+              </Text>
+              <AuthLink
+                label="Sign in"
+                action={() => router.push("/(auth)/sign-in" as Href)}
+              />
             </View>
           </>
         )}

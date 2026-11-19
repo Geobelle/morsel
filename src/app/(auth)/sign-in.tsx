@@ -1,3 +1,4 @@
+import { useApi } from "@/lib/api";
 import { useSignIn } from "@clerk/expo";
 import { router, type Href } from "expo-router";
 import { useState } from "react";
@@ -25,8 +26,18 @@ export default function SignInScreen() {
   const needsSecondFactor = signIn.status === "needs_second_factor";
   const needsVerification = needsTrust || needsSecondFactor;
 
+  const { request } = useApi();
+
   const completeSignIn = async () => {
     await signIn.finalize();
+    const data = await request("/api/auth/signIn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email }),
+    });
+    console.log(data, "data");
     router.replace("/(tabs)" as Href);
   };
 
@@ -47,7 +58,10 @@ export default function SignInScreen() {
         password,
       });
       if (error) {
-        setFormError(error.message || "We couldn’t sign you in. Check your details and try again.");
+        setFormError(
+          error.message ||
+            "We couldn’t sign you in. Check your details and try again.",
+        );
         return;
       }
       if (signIn.status === "complete") {
@@ -56,8 +70,12 @@ export default function SignInScreen() {
         signIn.status === "needs_client_trust" ||
         signIn.status === "needs_second_factor"
       ) {
-        const available = signIn.supportedSecondFactors.map((factor) => factor.strategy);
-        const method: VerificationMethod | undefined = available.includes("email_code")
+        const available = signIn.supportedSecondFactors.map(
+          (factor) => factor.strategy,
+        );
+        const method: VerificationMethod | undefined = available.includes(
+          "email_code",
+        )
           ? "email_code"
           : available.includes("phone_code")
             ? "phone_code"
@@ -67,30 +85,47 @@ export default function SignInScreen() {
                 ? "backup_code"
                 : undefined;
         if (!method) {
-          setFormError("This account needs a verification method that isn’t available on this device.");
+          setFormError(
+            "This account needs a verification method that isn’t available on this device.",
+          );
           return;
         }
         setVerificationMethod(method);
         if (method === "email_code" || method === "phone_code") {
-          const result = method === "email_code"
-            ? await signIn.mfa.sendEmailCode()
-            : await signIn.mfa.sendPhoneCode();
+          const result =
+            method === "email_code"
+              ? await signIn.mfa.sendEmailCode()
+              : await signIn.mfa.sendPhoneCode();
           if (result.error) {
-            setFormError(result.error.message || "We couldn’t send your sign-in code.");
+            setFormError(
+              result.error.message || "We couldn’t send your sign-in code.",
+            );
           }
         }
       } else {
-        setFormError("We need a little more information to finish signing you in.");
+        setFormError(
+          "We need a little more information to finish signing you in.",
+        );
       }
     } catch {
-      setFormError("We couldn’t complete that just now. Check your connection and try again.");
+      setFormError(
+        "We couldn’t complete that just now. Check your connection and try again.",
+      );
     }
   };
 
   const verifyDevice = async () => {
     setFormError("");
-    if (verificationMethod === "backup_code" ? !code.trim() : !/^\d{6}$/.test(code.trim())) {
-      setFormError(verificationMethod === "backup_code" ? "Enter a backup code." : "Enter the 6-digit verification code.");
+    if (
+      verificationMethod === "backup_code"
+        ? !code.trim()
+        : !/^\d{6}$/.test(code.trim())
+    ) {
+      setFormError(
+        verificationMethod === "backup_code"
+          ? "Enter a backup code."
+          : "Enter the 6-digit verification code.",
+      );
       return;
     }
     try {
@@ -104,11 +139,16 @@ export default function SignInScreen() {
               : await signIn.mfa.verifyBackupCode({ code: code.trim() });
       const { error } = result;
       if (error) {
-        setFormError(error.message || "That code didn’t work. Check it and try again.");
+        setFormError(
+          error.message || "That code didn’t work. Check it and try again.",
+        );
         return;
       }
       if (signIn.status === "complete") await completeSignIn();
-      else setFormError("We couldn’t verify this device. Try again or restart sign-in.");
+      else
+        setFormError(
+          "We couldn’t verify this device. Try again or restart sign-in.",
+        );
     } catch {
       setFormError("We couldn’t verify that code just now. Please try again.");
     }
@@ -148,13 +188,35 @@ export default function SignInScreen() {
         {needsVerification ? (
           <>
             <AuthField
-              label={verificationMethod === "backup_code" ? "Backup code" : "Verification code"}
-              placeholder={verificationMethod === "backup_code" ? "Enter backup code" : "000000"}
+              label={
+                verificationMethod === "backup_code"
+                  ? "Backup code"
+                  : "Verification code"
+              }
+              placeholder={
+                verificationMethod === "backup_code"
+                  ? "Enter backup code"
+                  : "000000"
+              }
               value={code}
-              onChangeText={(value) => setCode(value.replace(/\D/g, "").slice(0, 6))}
-              keyboardType={verificationMethod === "backup_code" ? "default" : "number-pad"}
-              textContentType={verificationMethod === "email_code" || verificationMethod === "phone_code" ? "oneTimeCode" : "none"}
-              autoComplete={verificationMethod === "email_code" || verificationMethod === "phone_code" ? "sms-otp" : "off"}
+              onChangeText={(value) =>
+                setCode(value.replace(/\D/g, "").slice(0, 6))
+              }
+              keyboardType={
+                verificationMethod === "backup_code" ? "default" : "number-pad"
+              }
+              textContentType={
+                verificationMethod === "email_code" ||
+                verificationMethod === "phone_code"
+                  ? "oneTimeCode"
+                  : "none"
+              }
+              autoComplete={
+                verificationMethod === "email_code" ||
+                verificationMethod === "phone_code"
+                  ? "sms-otp"
+                  : "off"
+              }
               maxLength={verificationMethod === "backup_code" ? 32 : 6}
               returnKeyType="done"
               onSubmitEditing={verifyDevice}
@@ -165,10 +227,17 @@ export default function SignInScreen() {
                 This helps keep your recipes and account safe on a new device.
               </Text>
             ) : null}
-            <AuthButton title="Verify and continue" onPress={verifyDevice} loading={busy} />
-            {verificationMethod === "email_code" || verificationMethod === "phone_code" ? (
+            <AuthButton
+              title="Verify and continue"
+              onPress={verifyDevice}
+              loading={busy}
+            />
+            {verificationMethod === "email_code" ||
+            verificationMethod === "phone_code" ? (
               <View className="mt-5 flex-row justify-center gap-1">
-                <Text className="font-body text-sm text-foreground">Didn’t get a code?</Text>
+                <Text className="font-body text-sm text-foreground">
+                  Didn’t get a code?
+                </Text>
                 <AuthLink label="Send a new one" action={resendCode} />
               </View>
             ) : null}
@@ -207,19 +276,22 @@ export default function SignInScreen() {
               <AuthLink
                 label="Forgot password?"
                 action={() =>
-                  router.push(
-                    {
-                      pathname: "/(auth)/forgot-password",
-                      params: { email: email.trim() },
-                    } as unknown as Href,
-                  )
+                  router.push({
+                    pathname: "/(auth)/forgot-password",
+                    params: { email: email.trim() },
+                  } as unknown as Href)
                 }
               />
             </View>
             <AuthButton title="Sign in" onPress={submit} loading={busy} />
             <View className="mt-6 flex-row justify-center gap-1">
-              <Text className="font-body text-sm text-foreground">New to Morsel?</Text>
-              <AuthLink label="Create an account" action={() => router.push("/(auth)/sign-up" as Href)} />
+              <Text className="font-body text-sm text-foreground">
+                New to Morsel?
+              </Text>
+              <AuthLink
+                label="Create an account"
+                action={() => router.push("/(auth)/sign-up" as Href)}
+              />
             </View>
           </>
         )}
