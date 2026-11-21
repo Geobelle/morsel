@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -10,8 +9,6 @@ type ImagePickerProps = {
 export default function ImagePickerComponent({
   onImageSelected,
 }: ImagePickerProps) {
-  const [image, setImage] = useState<string | null>(null);
-
   // Select image from gallery
   const pickImage = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();

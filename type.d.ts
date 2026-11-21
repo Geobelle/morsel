@@ -33,11 +33,11 @@ declare global {
   }
 
   interface pantryitem {
+    _id: string;
     name: string;
-    id: string;
-    image: ImageSourcePropType;
-    quantity: number;
+    image: string;
     category: string;
+    quantity: number;
     unit: string;
   }
 }

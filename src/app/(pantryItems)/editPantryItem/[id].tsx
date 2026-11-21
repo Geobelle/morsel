@@ -1,5 +1,6 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useApi } from "@/lib/api";
+import { router, useIsFocused, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -12,25 +13,35 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BottomDrawer from "../../../../components/BottomDrawer";
+import ImagePickerComponent from "../../../../components/ImagePicker";
 import PantryCategoryDropdown from "../../../../components/PantryCategoryDropdown";
 import PantryUnitDropDown from "../../../../components/PantryUnitsDropdown";
-import { pantryItems } from "../../../../constants/data";
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
+import { uploadImage } from "../../../../utils/uploadImage";
+
+interface PantryItem {
+  _id: string;
+  name: string;
+  image: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  createdAt: string;
+}
 
 const EditPantryItem = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const pantry = pantryItems.find((item) => item.id === id);
-
-  const [text, setText] = useState(
-    () => pantry?.name.replace(/\b\w/g, (char) => char.toUpperCase()) || "",
-  );
-
-  const [unit, setUnit] = useState(pantry?.unit || "");
-  const [category, setCategory] = useState(pantry?.category || "");
-
-  const [Quantity, setQuantity] = useState<number | "">(pantry?.quantity ?? "");
+  const [text, setText] = useState("");
+  const [unit, setUnit] = useState("");
+  const [category, setCategory] = useState("");
+  const [Quantity, setQuantity] = useState<number | "">("");
+  const [PantryItem, setPantryItem] = useState<PantryItem | null>(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const isFocused = useIsFocused();
 
   const decreaseQuantity = () => {
     setQuantity((prev) => (prev === "" ? "" : Math.max(0, prev - 1)));
@@ -39,6 +50,32 @@ const EditPantryItem = () => {
   const increaseQuantity = () => {
     setQuantity((prev) => (prev === "" ? 1 : prev + 1));
   };
+  const { request } = useApi();
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request(`/api/pantry/pantryItem/${id}`, {
+          method: "GET",
+        });
+
+        const item = data.data;
+
+        setPantryItem(item);
+        setText(item.name);
+        setUnit(item.unit);
+        setCategory(item.category);
+        setQuantity(item.quantity);
+        setSelectedImage(item.image);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    if (id) {
+      fetchPantryItems();
+    }
+  }, [id]);
 
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
@@ -47,7 +84,12 @@ const EditPantryItem = () => {
           <View>
             <View className="flex mb-6 flex-row relative items-center">
               <Pressable
-                onPress={() => router.back()}
+                onPress={() => {
+                  router.push({
+                    pathname: "/(pantryItems)/pantryDetails/[id]",
+                    params: { id: id },
+                  });
+                }}
                 className="bg-sage-light rounded-full p-3 z-50"
               >
                 <Image
@@ -62,14 +104,45 @@ const EditPantryItem = () => {
               </Text>
             </View>
 
-            <View className="my-6 w-full h-[220px] rounded-xl overflow-hidden items-center justify-center">
-              <Image
-                source={pantry?.image}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="cover"
-              />
-            </View>
+            <Pressable
+              onPress={() => setShowDrawer(true)}
+              className="my-6 border border-dashed border-primary w-full h-[220px] rounded-xl flex items-center justify-center"
+            >
+              {selectedImage ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              ) : (
+                <>
+                  <Text className="mb-2 text-primary-dark font-button text-xl">
+                    Add a photo
+                  </Text>
 
+                  <View className="bg-sage-light p-6 rounded-full">
+                    <Image
+                      source={image.camera}
+                      style={{ width: 60, height: 60 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </>
+              )}
+            </Pressable>
+            {isFocused && showDrawer && (
+              <BottomDrawer
+                visible={showDrawer}
+                onClose={() => setShowDrawer(false)}
+              >
+                <ImagePickerComponent
+                  onImageSelected={(uri) => {
+                    setSelectedImage(uri);
+                    setShowDrawer(false);
+                  }}
+                />
+              </BottomDrawer>
+            )}
             <View>
               <Text className="mb-2 text-primary-dark font-button text-xl">
                 Item name *
@@ -156,13 +229,64 @@ const EditPantryItem = () => {
               </Text>
             </View>
 
-            <Pressable className="bg-primary-dark py-4 items-center rounded-full mt-6">
+            <Pressable
+              onPress={async () => {
+                try {
+                  let imgUrl = "";
+
+                  // 1. Upload image to ImageKit if one was selected
+                  if (selectedImage) {
+                    const auth = await request("/api/pantry/imagekit-auth");
+
+                    imgUrl = await uploadImage(selectedImage, auth);
+                  }
+
+                  // 2. Update pantry item
+                  await request(`/api/pantry/pantryItem/update/${id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                      name: text,
+                      quantity: Quantity,
+                      unit: unit,
+                      category: category,
+                      imgUrl: imgUrl,
+                    }),
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push({
+                    pathname: "/(pantryItems)/pantryDetails/[id]",
+                    params: { id: id },
+                  });
+                } catch (error) {
+                  console.error("Error creating pantry item:", error);
+                }
+              }}
+
+              className="bg-primary-dark py-4 items-center rounded-full mt-6"
+            >
               <Text className="text-xl font-button text-background">
                 Save changes
               </Text>
             </Pressable>
 
-            <Pressable className="border-2 border-red-500 py-4 items-center rounded-full mt-4">
+            <Pressable
+              onPress={async () => {
+                try {
+                  // 2. Create pantry item
+                  await request(`/api/pantry/pantryItem/delete/${id}`, {
+                    method: "DELETE",
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push("/(tabs)/pantry");
+                } catch (error) {
+                  console.error("Error deleting pantry item:", error);
+                }
+              }}
+
+              className="border-2 border-red-500 py-4 items-center rounded-full mt-4"
+            >
               <Text className="text-xl font-button text-red-500">
                 Delete items
               </Text>

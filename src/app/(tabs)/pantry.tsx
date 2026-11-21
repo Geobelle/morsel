@@ -1,17 +1,46 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Keyboard, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PantryCard from "../../../components/PantryCard";
 import PantryCategory from "../../../components/PantryCategories";
 import SearchIngredients from "../../../components/SearchIngredients";
-import { pantryItems } from "../../../constants/data";
+import { useApi } from "../../lib/api";
+
+interface PantryItem {
+  _id: string;
+  name: string;
+  image: string;
+  category: string;
+  quantity: number;
+  unit: string;
+}
 
 const Pantry = () => {
+  const { request } = useApi();
+
+  const [PantryItems, setPantryItems] = useState<PantryItem[]>([]);
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request("/api/pantry/allPantryItems", {
+          method: "GET",
+        });
+
+        setPantryItems(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchPantryItems();
+  });
+
   const [specificCategory, setSpecificCategory] = useState("all");
   const [searchText, setSearchText] = useState("");
 
-  const filteredPantryItems = pantryItems.filter((item) => {
+  const filteredPantryItems = PantryItems.filter((item) => {
     const matchesCategory =
       specificCategory === "all" ||
       item.category.toLowerCase() === specificCategory;
@@ -22,6 +51,7 @@ const Pantry = () => {
 
     return matchesCategory && matchesSearch;
   });
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View className="flex-1">
@@ -58,7 +88,7 @@ const Pantry = () => {
         <FlatList
           data={filteredPantryItems}
           renderItem={({ item }) => <PantryCard {...item} />}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String(item._id)}
           numColumns={3}
           columnWrapperStyle={{
             justifyContent: "flex-start",

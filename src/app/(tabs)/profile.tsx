@@ -1,11 +1,12 @@
-import { router, type Href } from "expo-router";
 import { useClerk, useUser } from "@clerk/expo";
-import { useState } from "react";
+import { router, type Href } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { pantryItems, reciepeDetails } from "../../../constants/data";
+import { reciepeDetails } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
+import { useApi } from "../../lib/api";
 
 const Profile = () => {
   const { user } = useUser();
@@ -21,6 +22,26 @@ const Profile = () => {
       setSignOutError("We couldn’t sign you out just now. Please try again.");
     }
   };
+
+  const { request } = useApi();
+
+  const [PantryItems, setPantryItems] = useState<pantryitem[]>([]);
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request("/api/pantry/allPantryItems", {
+          method: "GET",
+        });
+
+        setPantryItems(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchPantryItems();
+  });
 
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
@@ -61,7 +82,7 @@ const Profile = () => {
           </View>
           <View className="gap-2 w-1/3">
             <Text className="text-center text-primary-dark font-recipe-title text-xl">
-              {pantryItems.length}
+              {PantryItems.length}
             </Text>
             <Text className="text-center text-foreground font-body">
               Ingredients
@@ -225,7 +246,10 @@ const Profile = () => {
 
         <View className="mt-8">
           {signOutError ? (
-            <Text accessibilityRole="alert" className="mb-3 font-body text-sm text-red-700">
+            <Text
+              accessibilityRole="alert"
+              className="mb-3 font-body text-sm text-red-700"
+            >
               {signOutError}
             </Text>
           ) : null}
@@ -234,7 +258,9 @@ const Profile = () => {
             onPress={handleSignOut}
             className="min-h-14 items-center justify-center rounded-full border border-primary"
           >
-            <Text className="font-button text-base text-primary-dark">Sign out</Text>
+            <Text className="font-button text-base text-primary-dark">
+              Sign out
+            </Text>
           </Pressable>
         </View>
       </View>

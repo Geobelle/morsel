@@ -17,11 +17,25 @@ export function useApi() {
       headers: {
         ...options.headers,
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        ...(options.body instanceof FormData
+          ? {}
+          : { "Content-Type": "application/json" }),
       },
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+
+    // console.log("API STATUS:", response.status);
+    // console.log("API RESPONSE:", responseText);
+
+    let data;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      console.log("INVALID SERVER RESPONSE:", responseText);
+      throw new Error("Server returned a non-JSON response.");
+    }
 
     if (!response.ok) {
       throw new Error(data.message || "Something went wrong.");

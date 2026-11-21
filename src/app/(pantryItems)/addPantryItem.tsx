@@ -1,3 +1,4 @@
+import { useApi } from "@/lib/api";
 import { router, useIsFocused } from "expo-router";
 import { useState } from "react";
 import {
@@ -18,15 +19,32 @@ import PantryCategoryDropdown from "../../../components/PantryCategoryDropdown";
 import PantryUnitDropDown from "../../../components/PantryUnitsDropdown";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
+import { uploadImage } from "../../../utils/uploadImage";
 
 const AddPantryItem = () => {
   const [text, setText] = useState("");
   const [unit, setUnit] = useState("pcs");
   const [category, setCategory] = useState("fresh");
+  const [quantity, setQuantity] = useState("");
   const [showDrawer, setShowDrawer] = useState(false);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const isFocused = useIsFocused();
+  const { request } = useApi();
+
+  const decreaseQuantity = () => {
+    setQuantity((prev) => {
+      const current = Number(prev) || 0;
+      return String(Math.max(0, current - 1));
+    });
+  };
+
+  const increaseQuantity = () => {
+    setQuantity((prev) => {
+      const current = Number(prev) || 0;
+      return String(current + 1);
+    });
+  };
 
   return (
     <SafeAreaView className="flex-1 p-6 bg-background">
@@ -122,7 +140,10 @@ const AddPantryItem = () => {
 
               <View className="flex flex-row items-center justify-around">
                 <View className="flex flex-row items-center justify-between border border-sage-light rounded-xl w-3/5">
-                  <Pressable className="rounded-full bg-sage-light w-10 h-10 flex items-center justify-center">
+                  <Pressable
+                    onPress={decreaseQuantity}
+                    className="rounded-full bg-sage-light w-10 h-10 flex items-center justify-center"
+                  >
                     <Text className="text-4xl font-recipe-title leading-none -mt-0.5 text-primary-dark">
                       -
                     </Text>
@@ -132,10 +153,15 @@ const AddPantryItem = () => {
                     keyboardType="numeric"
                     className="w-16 h-[48px] border border-primary rounded-xl px-2 text-center text-foreground font-body"
                     placeholder="2"
+                    onChangeText={setQuantity}
+                    value={quantity}
                     placeholderTextColor="#8FB89A"
                   />
 
-                  <Pressable className="rounded-full bg-sage-light w-10 h-10 flex items-center justify-center">
+                  <Pressable
+                    onPress={increaseQuantity}
+                    className="rounded-full bg-sage-light w-10 h-10 flex items-center justify-center"
+                  >
                     <Text className="text-4xl font-recipe-title leading-none -mt-0.5 text-primary-dark">
                       +
                     </Text>
@@ -168,7 +194,38 @@ const AddPantryItem = () => {
               </Text>
             </View>
 
-            <Pressable className="bg-primary-dark py-4  items-center rounded-full mt-6">
+            <Pressable
+              onPress={async () => {
+                try {
+                  let imgUrl = "";
+
+                  // 1. Upload image to ImageKit if one was selected
+                  if (selectedImage) {
+                    const auth = await request("/api/pantry/imagekit-auth");
+
+                    imgUrl = await uploadImage(selectedImage, auth);
+                  }
+
+                  // 2. Create pantry item
+                  await request("/api/pantry/create", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      name: text,
+                      quantity: quantity,
+                      unit: unit,
+                      category: category,
+                      imgUrl: imgUrl,
+                    }),
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push("/(tabs)/pantry");
+                } catch (error) {
+                  console.error("Error creating pantry item:", error);
+                }
+              }}
+              className="bg-primary-dark py-4  items-center rounded-full mt-6"
+            >
               <Text className="text-xl font-button text-background">
                 Save item
               </Text>
