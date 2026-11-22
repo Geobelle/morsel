@@ -7,23 +7,48 @@ import {
   View,
 } from "react-native";
 
-const ReciepeInfoCard = ({ id, name, time, image, category }: ReciepeCard) => {
+interface ReciepeDetails {
+  id: string;
+  image: string;
+  name: string;
+  time: string;
+  category: string;
+  ingredients: Ingredients[];
+  Preparation: Preparation[];
+}
+
+const ReciepeInfoCard = ({
+  id,
+  name,
+  time,
+  image,
+  category,
+}: ReciepeDetails) => {
   const { width } = useWindowDimensions();
   return (
     <Pressable
       onPress={() => {
         router.push({
           pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
-          params: { id },
+          params: { id: id },
         });
       }}
       className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
-      <Image
-        source={image}
-        style={{ width: "30%", height: 100 }}
-        resizeMode="cover"
-      />
+      {image ? (
+        <Image
+          source={{ uri: image }}
+          style={{ width: "30%", height: 100 }}
+          resizeMode="cover"
+        />
+      ) : (
+        <View
+          style={{ width: "100%", height: 100 }}
+          className="bg-sage-light items-center justify-center"
+        >
+          <Text className="text-primary-dark">No image</Text>
+        </View>
+      )}
 
       <View className="pl-3 pr-2 flex-1 py-2">
         <View className="gap-1">

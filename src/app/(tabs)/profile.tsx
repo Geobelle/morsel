@@ -3,7 +3,6 @@ import { router, type Href } from "expo-router";
 import { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { reciepeDetails } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 import { useApi } from "../../lib/api";
@@ -43,6 +42,27 @@ const Profile = () => {
     fetchPantryItems();
   });
 
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipes(data.data);
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <View>
@@ -66,7 +86,7 @@ const Profile = () => {
         <View className="flex flex-row justify-between mt-8">
           <View className="gap-2 w-1/3">
             <Text className="text-center text-primary-dark font-recipe-title text-xl">
-              {reciepeDetails.length}
+              {recipes.length}
             </Text>
             <Text className="text-center text-foreground font-body">
               Recipes Saved

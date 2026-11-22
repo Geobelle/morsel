@@ -1,13 +1,56 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ReciepeInfoCard from "../../../components/ReciepeInfoCard";
 import RecipeCategory from "../../../components/RecipeCategory";
 import SearchBar from "../../../components/SearchBar";
-import { reciepeDetails } from "../../../constants/data";
+import { useApi } from "../../lib/api";
+
+interface ReciepeDetails {
+  id: string;
+  image: string;
+  name: string;
+  time: string;
+  category: string;
+  ingredients: Ingredients[];
+  Preparation: Preparation[];
+}
 
 const Recipe = () => {
+  const { request } = useApi();
+
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipes(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image,
+              time: item.prepTime,
+              category: item.category,
+              ingredients: item.ingredients,
+              Preparation: item.instructions,
+            })),
+          );
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
   const { category } = useLocalSearchParams<{ category?: string }>();
   const [searchText, setSearchText] = useState("");
 
@@ -15,7 +58,7 @@ const Recipe = () => {
     category?.toLowerCase() || "all",
   );
 
-  const filteredRecipes = reciepeDetails.filter((item) => {
+  const filteredRecipes = recipes.filter((item) => {
     const matchesCategory =
       specificCategory === "all" ||
       item.category.toLowerCase() === specificCategory;

@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,22 +7,50 @@ import QuickAction from "../../../components/QuickAction";
 import QuickCategories from "../../../components/QuickCategories";
 import ReciepeCard from "../../../components/ReciepeCard";
 
-import { reciepeDetails } from "../../../constants/data";
+import { useApi } from "@/lib/api";
 import { icons } from "../../../constants/icons";
 import image from "../../../constants/image";
 
 const Tabindex = () => {
-  // const filteredRecipes = reciepeDetails.filter((item) => {
-  //   const matchesSearch = item.name
-  //     .toLowerCase()
-  //     .includes(searchText.toLowerCase());
+  const { request } = useApi();
 
-  //   return matchesSearch;
-  // });
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+  const [randomRecipes, setRandomRecipes] = useState<ReciepeDetails[]>([]);
 
-  const [randomRecipes] = useState(() =>
-    [...reciepeDetails].sort(() => Math.random() - 0.5).slice(0, 2),
-  );
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+
+        if (Array.isArray(data.data)) {
+          setRecipes(
+            data.data.map((item: any) => ({
+              ...item,
+              id: item._id,
+            })),
+          );
+          const mappedRecipes = data.data.map((item: any) => ({
+            ...item,
+            id: item._id,
+          }));
+
+          setRecipes(mappedRecipes);
+
+          const shuffled = [...mappedRecipes].sort(() => Math.random() - 0.5);
+
+          setRandomRecipes(shuffled.slice(0, 2));
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <FlatList

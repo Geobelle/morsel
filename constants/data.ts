@@ -1,7 +1,6 @@
 import { tabicons } from "./tabIcons";
 
 import image from "./image";
-import panttryItems from "./panttryItems";
 import recipeImage from "./recipeImage";
 
 export const tabsDetails = [
@@ -50,65 +49,9 @@ export const tabsDetails = [
 
 export const reciepeDetails: ReciepeDetails[] = [
   {
-    name: "Jollof Rice",
-    id: "jollof-rice",
-    time: "45 mins",
-    image: image.jollof,
-    category: "lunch",
-    ingredients: [
-      { id: "rice", name: "Rice", quantity: "2 cups" },
-      { id: "tomatoes", name: "Tomatoes", quantity: "4 medium" },
-      { id: "oil", name: "Oil", quantity: "½ cup" },
-      { id: "pepper", name: "Pepper", quantity: "4 pieces" },
-      { id: "shobo", name: "Shombo", quantity: "5 pieces" },
-      { id: "onions", name: "Onions", quantity: "2 medium" },
-      { id: "tomatoPaste", name: "Tomato paste", quantity: "1 small tin" },
-      { id: "bayleaf", name: "Bay leaf", quantity: "2 leaves" },
-      { id: "maggi", name: "Seasoning cubes", quantity: "3 cubes" },
-      { id: "curry", name: "Curry powder", quantity: "1 tsp" },
-      { id: "salt", name: "Salt", quantity: "To taste" },
-    ],
-
-    Preparation: [
-      {
-        id: "1",
-        name: "Wash the rice thoroughly under running water and set aside.",
-      },
-      {
-        id: "2",
-        name: "Blend tomatoes, red bell peppers, scotch bonnet peppers and onions until smooth.",
-      },
-      {
-        id: "3",
-        name: "Heat vegetable oil in a pot, add sliced onions and tomato paste, and fry for a few minutes.",
-      },
-      {
-        id: "4",
-        name: "Pour in the blended pepper mixture and cook until the sauce thickens and the excess liquid reduces.",
-      },
-      {
-        id: "5",
-        name: "Season with curry powder, thyme, stock cubes, salt and your preferred spices.",
-      },
-      {
-        id: "6",
-        name: "Add stock and rinsed rice, stirring until the rice is evenly coated with the sauce.",
-      },
-      {
-        id: "7",
-        name: "Cover the pot with foil and a lid, then cook on low heat until the rice is tender, stirring occasionally.",
-      },
-      {
-        id: "8",
-        name: "Fluff the rice gently, allow it to steam for a few more minutes, and serve hot.",
-      },
-    ],
-  },
-
-  {
     name: "Egusi Soup",
     id: "egusi-soup",
-    time: "30 mins",
+    prepTime: "30 mins",
     image: image.egusi,
     category: "dinner",
     ingredients: [
@@ -169,7 +112,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Pancakes",
     image: recipeImage.pancake,
     id: "pancakes",
-    time: "20 mins",
+    prepTime: "20 mins",
     category: "Breakfast",
     ingredients: [
       { id: "flour", name: "All-purpose flour", quantity: "1 cup" },
@@ -208,7 +151,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Bread and Tea",
     image: recipeImage.tea,
     id: "bread-and-tea",
-    time: "10 mins",
+    prepTime: "10 mins",
     category: "Breakfast",
     ingredients: [
       { id: "bread", name: "Sliced bread", quantity: "4 slices" },
@@ -232,7 +175,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "French Toast",
     image: recipeImage.frenchToast,
     id: "french-toast",
-    time: "15 mins",
+    prepTime: "15 mins",
     category: "Breakfast",
     ingredients: [
       { id: "bread", name: "Bread slices", quantity: "4 slices" },
@@ -267,7 +210,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Fried Egg and Plantain",
     image: recipeImage.eggAndPlantain,
     id: "fried-egg-and-plantain",
-    time: "20 mins",
+    prepTime: "20 mins",
     category: "Breakfast",
     ingredients: [
       { id: "plantain", name: "plantain", quantity: "2" },
@@ -306,7 +249,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Zobo Drink",
     image: recipeImage.zobo,
     id: "zobo-drink",
-    time: "40 mins",
+    prepTime: "40 mins",
     category: "Drinks",
     ingredients: [
       { id: "zobo", name: "Dried hibiscus leaves", quantity: "2 cups" },
@@ -348,7 +291,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Tigernut Drink",
     image: recipeImage.tigernut,
     id: "tigernut-drink",
-    time: "30 mins",
+    prepTime: "30 mins",
     category: "Drinks",
     ingredients: [
       { id: "tigernut", name: "Dried or fresh tigernuts", quantity: "2 cups" },
@@ -388,7 +331,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Fried Rice",
     image: recipeImage.friedRice,
     id: "fried-rice",
-    time: "45 mins",
+    prepTime: "45 mins",
     category: "Dinner",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "3 cups" },
@@ -437,7 +380,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Asun Rice",
     image: recipeImage.asunrice,
     id: "asun-rice",
-    time: "50 mins",
+    prepTime: "50 mins",
     category: "Dinner",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "3 cups" },
@@ -486,7 +429,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "White Rice and Stew",
     image: recipeImage.riceandStew,
     id: "white-rice-and-stew",
-    time: "45 mins",
+    prepTime: "45 mins",
     category: "Lunch",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "3 cups" },
@@ -531,7 +474,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Rice and Beans",
     image: recipeImage.riceandBeans,
     id: "rice-and-beans",
-    time: "50 mins",
+    prepTime: "50 mins",
     category: "Lunch",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "2 cups" },
@@ -565,7 +508,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Oil Rice",
     image: recipeImage.oilrice,
     id: "oil-rice",
-    time: "40 mins",
+    prepTime: "40 mins",
     category: "Lunch",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "3 cups" },
@@ -609,7 +552,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Owho Soup",
     image: recipeImage.owho,
     id: "owho-soup",
-    time: "60 mins",
+    prepTime: "60 mins",
     category: "Dinner",
     ingredients: [
       { id: "owho", name: "Owho powder", quantity: "2 cups" },
@@ -663,7 +606,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Vegetable Soup",
     image: recipeImage.vegetablesoup,
     id: "vegetable-soup",
-    time: "45 mins",
+    prepTime: "45 mins",
     category: "Dinner",
     ingredients: [
       { id: "ugu", name: "Ugu leaves", quantity: "3 cups" },
@@ -712,7 +655,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Banga Soup",
     image: recipeImage.bangasoup,
     id: "banga-soup",
-    time: "60 mins",
+    prepTime: "60 mins",
     category: "Dinner",
     ingredients: [
       { id: "banga", name: "Palm nut extract", quantity: "1 litre" },
@@ -762,7 +705,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Banga Rice",
     image: recipeImage.bangarice,
     id: "banga-rice",
-    time: "45 mins",
+    prepTime: "45 mins",
     category: "Lunch",
     ingredients: [
       { id: "rice", name: "Rice", quantity: "3 cups" },
@@ -803,7 +746,7 @@ export const reciepeDetails: ReciepeDetails[] = [
     name: "Goat Meat Pepper Soup",
     image: recipeImage.goatmeatpeppersoup,
     id: "goat-meat-pepper-soup",
-    time: "50 mins",
+    prepTime: "50 mins",
     category: "Dinner",
     ingredients: [
       { id: "goat-meat", name: "Goat meat", quantity: "700g" },
@@ -844,202 +787,154 @@ export const reciepeDetails: ReciepeDetails[] = [
       { id: "8", name: "Taste, adjust the seasoning and serve hot." },
     ],
   },
-  {
-    name: "Chicken Pepper Soup",
-    image: recipeImage.chickenpeppersoup,
-    id: "chicken-pepper-soup",
-    time: "40 mins",
-    category: "Dinner",
-    ingredients: [
-      { id: "chicken", name: "Chicken", quantity: "700g" },
-      { id: "pepper", name: "Fresh pepper", quantity: "3" },
-      { id: "onion", name: "Onion", quantity: "1" },
-      {
-        id: "pepper-soup-spice",
-        name: "Pepper soup spice",
-        quantity: "2 tbsp",
-      },
-      { id: "ginger", name: "Fresh ginger", quantity: "1 small piece" },
-      { id: "garlic", name: "Garlic", quantity: "2 cloves" },
-      { id: "scent-leaf", name: "Scent leaves", quantity: "1 small bunch" },
-      { id: "seasoning", name: "Seasoning cubes", quantity: "2" },
-      { id: "salt", name: "Salt", quantity: "To taste" },
-      { id: "water", name: "Water", quantity: "As needed" },
-    ],
-    Preparation: [
-      { id: "1", name: "Wash the chicken pieces and place them in a pot." },
-      {
-        id: "2",
-        name: "Add chopped onions, ginger, garlic, seasoning cubes and salt.",
-      },
-      {
-        id: "3",
-        name: "Add a little water and cook until the chicken is partially tender.",
-      },
-      {
-        id: "4",
-        name: "Pour in more water to make the soup and bring to a boil.",
-      },
-      { id: "5", name: "Add pepper soup spice and blended fresh pepper." },
-      {
-        id: "6",
-        name: "Simmer until the chicken is completely cooked and the broth is flavourful.",
-      },
-      {
-        id: "7",
-        name: "Add chopped scent leaves and cook for another few minutes.",
-      },
-      { id: "8", name: "Adjust the seasoning and serve hot." },
-    ],
-  },
 ];
 
-export const pantryItems: pantryitem[] = [
-  {
-    name: "eggs",
-    id: "16",
-    image: panttryItems.egg,
-    quantity: 2,
-    category: "Fresh",
-    unit: "pcs",
-  },
-  {
-    name: "tomatoes",
-    id: "1",
-    image: panttryItems.tomatoes,
-    quantity: 2,
-    category: "Fresh",
-    unit: "kg",
-  },
-  {
-    name: "onions",
-    id: "2",
-    image: panttryItems.onions,
-    quantity: 2,
-    category: "Fresh",
-    unit: "pcs",
-  },
-  {
-    name: "chicken",
-    id: "3",
-    image: panttryItems.chicken,
-    quantity: 2,
-    category: "Frozen",
-    unit: "kg",
-  },
-  {
-    name: "rice",
-    id: "4",
-    image: panttryItems.rice,
-    quantity: 2,
-    category: "Dry",
-    unit: "kg",
-  },
-  {
-    name: "oil",
-    id: "5",
-    image: panttryItems.oil,
-    quantity: 2,
-    category: "Others",
-    unit: "bottles",
-  },
-  {
-    name: "pepper",
-    id: "6",
-    image: panttryItems.pepper,
-    quantity: 2,
-    category: "Fresh",
-    unit: "kg",
-  },
-  {
-    name: "garlic",
-    id: "7",
-    image: panttryItems.garlic,
-    quantity: 2,
-    category: "Dry",
-    unit: "pcs",
-  },
-  {
-    name: "ginger",
-    id: "8",
-    image: panttryItems.ginger,
-    quantity: 2,
-    category: "Fresh",
-    unit: "slices",
-  },
-  {
-    name: "palm oil",
-    id: "9",
-    image: panttryItems.palmOil,
-    quantity: 2,
-    category: "Others",
-    unit: "bottles",
-  },
-  {
-    name: "beans",
-    id: "10",
-    image: panttryItems.beans,
-    quantity: 2,
-    category: "Dry",
-    unit: "kg",
-  },
-  {
-    name: "bell pepper",
-    id: "11",
-    image: panttryItems.bellPepper,
-    quantity: 2,
-    category: "Fresh",
-    unit: "pcs",
-  },
-  {
-    name: "plantain",
-    id: "12",
-    image: panttryItems.plantain,
-    quantity: 2,
-    category: "Fresh",
-    unit: "pcs",
-  },
-  {
-    name: "ugu",
-    id: "13",
-    image: panttryItems.ugu,
-    quantity: 2,
-    category: "Fresh",
-    unit: "pcs",
-  },
-  {
-    name: "zobo leaf",
-    id: "14",
-    image: panttryItems.zoboLeaf,
-    quantity: 2,
-    category: "Dry",
-    unit: "kg",
-  },
-  {
-    name: "fish",
-    id: "15",
-    image: panttryItems.fish,
-    quantity: 2,
-    category: "Fresh",
-    unit: "kg",
-  },
-  {
-    name: "salt",
-    id: "17",
-    image: panttryItems.salt,
-    quantity: 1,
-    category: "others",
-    unit: "kg",
-  },
-];
+// export const pantryItems: pantryitem[] = [
+//   {
+//     name: "eggs",
+//     id: "16",
+//     image: panttryItems.egg,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "tomatoes",
+//     id: "1",
+//     image: panttryItems.tomatoes,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "kg",
+//   },
+//   {
+//     name: "onions",
+//     id: "2",
+//     image: panttryItems.onions,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "chicken",
+//     id: "3",
+//     image: panttryItems.chicken,
+//     quantity: 2,
+//     category: "Frozen",
+//     unit: "kg",
+//   },
+//   {
+//     name: "rice",
+//     id: "4",
+//     image: panttryItems.rice,
+//     quantity: 2,
+//     category: "Dry",
+//     unit: "kg",
+//   },
+//   {
+//     name: "oil",
+//     id: "5",
+//     image: panttryItems.oil,
+//     quantity: 2,
+//     category: "Others",
+//     unit: "bottles",
+//   },
+//   {
+//     name: "pepper",
+//     id: "6",
+//     image: panttryItems.pepper,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "kg",
+//   },
+//   {
+//     name: "garlic",
+//     id: "7",
+//     image: panttryItems.garlic,
+//     quantity: 2,
+//     category: "Dry",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "ginger",
+//     id: "8",
+//     image: panttryItems.ginger,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "slices",
+//   },
+//   {
+//     name: "palm oil",
+//     id: "9",
+//     image: panttryItems.palmOil,
+//     quantity: 2,
+//     category: "Others",
+//     unit: "bottles",
+//   },
+//   {
+//     name: "beans",
+//     id: "10",
+//     image: panttryItems.beans,
+//     quantity: 2,
+//     category: "Dry",
+//     unit: "kg",
+//   },
+//   {
+//     name: "bell pepper",
+//     id: "11",
+//     image: panttryItems.bellPepper,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "plantain",
+//     id: "12",
+//     image: panttryItems.plantain,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "ugu",
+//     id: "13",
+//     image: panttryItems.ugu,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "pcs",
+//   },
+//   {
+//     name: "zobo leaf",
+//     id: "14",
+//     image: panttryItems.zoboLeaf,
+//     quantity: 2,
+//     category: "Dry",
+//     unit: "kg",
+//   },
+//   {
+//     name: "fish",
+//     id: "15",
+//     image: panttryItems.fish,
+//     quantity: 2,
+//     category: "Fresh",
+//     unit: "kg",
+//   },
+//   {
+//     name: "salt",
+//     id: "17",
+//     image: panttryItems.salt,
+//     quantity: 1,
+//     category: "others",
+//     unit: "kg",
+//   },
+// ];
 
 export const exactRecipe: ReciepeDetails[] = [];
 export const partialRecipe: ReciepeDetails[] = [];
 export const optionalItems: pantryitem[] = [
   {
     name: "milk",
-    id: "18",
-    image: {},
+    _id: "18",
+    image: "",
     quantity: 2,
     category: "",
     unit: "bottles",
@@ -1065,16 +960,16 @@ export const optionalItems: pantryitem[] = [
 export const toBuyList: pantryitem[] = [
   {
     name: "bread",
-    id: "21",
-    image: {},
+    _id: "21",
+    image: "",
     quantity: 4,
     category: "",
     unit: "bags",
   },
   {
     name: "carrot",
-    id: "22",
-    image: {},
+    _id: "22",
+    image: "",
     quantity: 1,
     category: "",
     unit: "kg",
@@ -1082,8 +977,8 @@ export const toBuyList: pantryitem[] = [
 
   {
     name: "curry",
-    id: "23",
-    image: {},
+    _id: "23",
+    image: "",
     quantity: 1,
     category: "",
     unit: "g",

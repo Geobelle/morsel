@@ -1,14 +1,47 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { reciepeDetails } from "../../../../constants/data";
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
+import { useApi } from "../../../lib/api";
+
+interface ReciepeDetails {
+  id: string;
+  image: string;
+  name: string;
+  time: string;
+  category: string;
+  ingredients: Ingredients[];
+  instructions: Preparation[];
+}
 
 const RecipeDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const recipe = reciepeDetails.find((item) => item.id === id);
+  // const recipe = reciepeDetails.find((item) => item.id === id);
+
+  const { request } = useApi();
+
+  const [recipeDetails, setRecipeDetails] = useState<ReciepeDetails | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const fetchRecipeDetails = async () => {
+      try {
+        const data = await request(`/api/recipes/${id}`, {
+          method: "GET",
+        });
+        setRecipeDetails(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipeDetails();
+  }, []);
+
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -32,7 +65,7 @@ const RecipeDetails = () => {
 
         <View className=" w-full h-[220px] rounded-xl overflow-hidden items-center justify-center">
           <Image
-            source={recipe?.image}
+            source={{ uri: recipeDetails?.image }}
             style={{
               width: "100%",
               height: "100%",
@@ -42,7 +75,7 @@ const RecipeDetails = () => {
         </View>
         <View className="flex-row  mt-4 items-center justify-between">
           <Text className="text-primary-dark font-heading text-3xl">
-            {recipe?.name}
+            {recipeDetails?.name}
           </Text>
 
           <View className="flex-row  gap-3">
@@ -76,7 +109,7 @@ const RecipeDetails = () => {
             />
 
             <Text className="font-body text-primary-dark  text-center">
-              {recipe?.category}
+              {recipeDetails?.category}
             </Text>
           </View>
 
@@ -91,7 +124,7 @@ const RecipeDetails = () => {
             />
 
             <Text className="font-body text-primary-dark  text-center">
-              {recipe?.time}
+              {recipeDetails?.time}
             </Text>
           </View>
         </View>
@@ -100,7 +133,7 @@ const RecipeDetails = () => {
             Ingredients
           </Text>
 
-          {recipe?.ingredients.map((item) => (
+          {recipeDetails?.ingredients.map((item) => (
             <View
               key={item.id}
               className="flex flex-row justify-between items-center mb-3  border-b border-sage-light"
@@ -120,7 +153,7 @@ const RecipeDetails = () => {
             Instructions
           </Text>
 
-          {recipe?.Preparation.map((item) => (
+          {recipeDetails?.instructions.map((item) => (
             <View
               key={item.id}
               className="flex flex-row gap-4 items-center mb-3 border-b border-sage-light"

@@ -17,9 +17,9 @@ declare global {
 
   interface ReciepeDetails {
     id: string;
-    image: ImageSourcePropType;
+    image: string;
     name: string;
-    time: string;
+    prepTime: string;
     category: string;
     ingredients: Ingredients[];
     Preparation: Preparation[];
@@ -27,7 +27,7 @@ declare global {
   interface ReciepeCard {
     image: ImageSourcePropType;
     name: string;
-    time: string;
+    prepTime: string;
     id: string;
     category: string;
   }
