@@ -9,9 +9,10 @@ interface List {
   name: string;
   category: string;
   quantity: string;
+  onEdit: (id: string) => void;
 }
 
-const OptionalList = ({ name, quantity, _id }: List) => {
+const OptionalList = ({ name, quantity, _id, onEdit }: List) => {
   const [checked, setChecked] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const [position, setPosition] = useState({
@@ -61,7 +62,11 @@ const OptionalList = ({ name, quantity, _id }: List) => {
         visible={menuVisible}
         position={position}
         onClose={() => setMenuVisible(false)}
-        onEdit={() => console.log("Edit")}
+        onEdit={() => {
+          setMenuVisible(false);
+          onEdit(_id);
+        }}
+
         onDelete={async () => {
           try {
             // 2. Create pantry item

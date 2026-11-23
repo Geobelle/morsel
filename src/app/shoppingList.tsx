@@ -5,6 +5,7 @@ import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddItem from "../../components/AddItem";
 import BottomDrawer from "../../components/BottomDrawer";
+import EditItemShopping from "../../components/EditItemShopping";
 import OptionalList from "../../components/OptionalList";
 import ToBuyList from "../../components/ToBuyList";
 import { icons } from "../../constants/icons";
@@ -15,10 +16,13 @@ interface List {
   name: string;
   category: string;
   quantity: string;
+  onEdit: (id: string) => void;
 }
 
 const ShoppingList = () => {
   const [showDrawer, setShowDrawer] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const isFocused = useIsFocused();
 
   const { request } = useApi();
@@ -28,6 +32,8 @@ const ShoppingList = () => {
   const [optionalList, setOptionalList] = useState<List[]>([]);
 
   useEffect(() => {
+    if (!isFocused) return;
+
     const fetchToBuyList = async () => {
       try {
         const data = await request("/api/shoppingList/toBuy?category=toBuy", {
@@ -41,13 +47,15 @@ const ShoppingList = () => {
     };
 
     fetchToBuyList();
-  });
+  }, [isFocused, refreshKey]);
 
   useEffect(() => {
+    if (!isFocused) return;
+
     const fetchOptionalList = async () => {
       try {
         const data = await request(
-          "/api/shoppingList/optional?category=optional",
+          "/api/shoppingList/toBuy?category=optional",
           {
             method: "GET",
           },
@@ -60,7 +68,7 @@ const ShoppingList = () => {
     };
 
     fetchOptionalList();
-  });
+  }, [isFocused, refreshKey]);
 
   return (
     <SafeAreaView className="flex-1 p-6   bg-background">
@@ -125,7 +133,16 @@ const ShoppingList = () => {
           </View>
 
           {toBuyList.length > 0 ? (
-            toBuyList.map((item) => <ToBuyList key={item._id} {...item} />)
+            toBuyList.map((item) => (
+              <ToBuyList
+                key={item._id}
+                {...item}
+                onEdit={(id) => {
+                  setEditingItemId(id);
+                  setShowDrawer(true);
+                }}
+              />
+            ))
           ) : (
             <Text className="text-foreground font-body">No items yet</Text>
           )}
@@ -163,7 +180,14 @@ const ShoppingList = () => {
 
           {optionalList.length > 0 ? (
             optionalList.map((item) => (
-              <OptionalList key={item._id} {...item} />
+              <OptionalList
+                key={item._id}
+                {...item}
+                onEdit={(id) => {
+                  setEditingItemId(id);
+                  setShowDrawer(true);
+                }}
+              />
             ))
           ) : (
             <Text className="text-foreground font-body">No items yet</Text>
@@ -215,9 +239,27 @@ const ShoppingList = () => {
         {isFocused && showDrawer && (
           <BottomDrawer
             visible={showDrawer}
-            onClose={() => setShowDrawer(false)}
+            onClose={() => {
+              setShowDrawer(false);
+              setEditingItemId(null);
+            }}
           >
-            <AddItem />
+            {editingItemId ? (
+              <EditItemShopping
+                id={editingItemId}
+                onClose={() => {
+                  setShowDrawer(false);
+                  setEditingItemId(null);
+                }}
+                onSaved={() => {
+                  setShowDrawer(false);
+                  setEditingItemId(null);
+                  setRefreshKey((prev) => prev + 1);
+                }}
+              />
+            ) : (
+              <AddItem />
+            )}
           </BottomDrawer>
         )}
       </ScrollView>
