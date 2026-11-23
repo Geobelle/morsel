@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -13,20 +13,72 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import PantryCard from "../../components/PantryCard";
 import ReciepeInfoCard from "../../components/ReciepeInfoCard";
 import SearchBar from "../../components/SearchBar";
-import { pantryItems, reciepeDetails } from "../../constants/data";
+
 import { icons } from "../../constants/icons";
+import { useApi } from "../lib/api";
 
 const Search = () => {
+  const { request } = useApi();
+
+  const [PantryItems, setPantryItems] = useState<pantryitem[]>([]);
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request("/api/pantry/allPantryItems", {
+          method: "GET",
+        });
+
+        setPantryItems(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchPantryItems();
+  });
+
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipes(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image,
+              time: item.prepTime,
+              category: item.category,
+              ingredients: item.ingredients,
+              Preparation: item.instructions,
+            })),
+          );
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
   const [searchText, setSearchText] = useState("");
 
-  const filteredPantryItems = pantryItems.filter((item) => {
+  const filteredPantryItems = PantryItems.filter((item) => {
     return (
       searchText.trim().length > 0 &&
       item.name.toLowerCase().includes(searchText.toLowerCase().trim())
     );
   });
 
-  const filteredRecipe = reciepeDetails.filter((item) => {
+  const filteredRecipe = recipes.filter((item) => {
     return (
       searchText.trim().length > 0 &&
       item.name.toLowerCase().includes(searchText.toLowerCase().trim())
@@ -57,7 +109,7 @@ const Search = () => {
                   <FlatList
                     data={filteredPantryItems}
                     renderItem={({ item }) => <PantryCard {...item} />}
-                    keyExtractor={(item) => String(item.id)}
+                    keyExtractor={(item) => String(item._id)}
                     showsVerticalScrollIndicator={false}
                     numColumns={3}
                     columnWrapperStyle={{
@@ -78,8 +130,10 @@ const Search = () => {
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={
                 searchText.trim().length > 0 ? (
-                  <Text className="home-empty-state">No items found</Text>
-                ) : null
+                  <Text className="text-center font-body text-foreground">
+                    No items found.
+                  </Text>
+                ) : undefined
               }
             />
           </View>

@@ -11,7 +11,7 @@ interface ReciepeDetails {
   id: string;
   image: string;
   name: string;
-  time: string;
+  prepTime: string;
   category: string;
   ingredients: Ingredients[];
   Preparation: Preparation[];
@@ -52,11 +52,21 @@ const Recipe = () => {
   }, []);
 
   const { category } = useLocalSearchParams<{ category?: string }>();
+
+  const routeCategory = category?.toLowerCase() || "all";
+
   const [searchText, setSearchText] = useState("");
 
-  const [specificCategory, setSpecificCategory] = useState(
-    category?.toLowerCase() || "all",
-  );
+  const [previousRouteCategory, setPreviousRouteCategory] =
+    useState(routeCategory);
+
+  const [specificCategory, setSpecificCategory] = useState(routeCategory);
+
+  // Reset the selected category when navigation changes the route parameter
+  if (routeCategory !== previousRouteCategory) {
+    setPreviousRouteCategory(routeCategory);
+    setSpecificCategory(routeCategory);
+  }
 
   const filteredRecipes = recipes.filter((item) => {
     const matchesCategory =
@@ -69,7 +79,6 @@ const Recipe = () => {
 
     return matchesCategory && matchesSearch;
   });
-
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
       <Text className="text-primary-dark font-heading text-3xl">

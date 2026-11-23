@@ -1,20 +1,68 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ExactMatches from "../../../components/ExactMatches";
 import PartialMatches from "../../../components/PartialMatches";
 import WhatToCookCategories from "../../../components/WhatToCookCategories";
-import { pantryItems, reciepeDetails } from "../../../constants/data";
 import { icons } from "../../../constants/icons";
 import { tabicons } from "../../../constants/tabIcons";
 import { getRecipeMatches } from "../../../utils/recipeMatching";
+import { useApi } from "../../lib/api";
 
 const WhatToCook = () => {
-  const { exactRecipe, partialRecipe } = getRecipeMatches(
-    reciepeDetails,
-    pantryItems,
-  );
+  const { request } = useApi();
+
+  const [PantryItems, setPantryItems] = useState<pantryitem[]>([]);
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request("/api/pantry/allPantryItems", {
+          method: "GET",
+        });
+
+        setPantryItems(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchPantryItems();
+  });
+
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipes(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image,
+              time: item.prepTime,
+              category: item.category,
+              ingredients: item.ingredients,
+              Preparation: item.instructions,
+            })),
+          );
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
+  const { exactRecipe, partialRecipe } = getRecipeMatches(recipes, PantryItems);
   const [specificCategory, setSpecificCategory] = useState("all");
 
   const filteredExactRecipes =
@@ -52,7 +100,7 @@ const WhatToCook = () => {
             </Text>
 
             <Text className="font-ingredients text-lg text-primary-dark mb-1">
-              You have {pantryItems.length} ingredients
+              You have {PantryItems.length} ingredients
             </Text>
             <Text className="text-sm font-body text-primary-dark">
               checkout your recipes that you can make with what you have.

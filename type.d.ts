@@ -25,7 +25,7 @@ declare global {
     Preparation: Preparation[];
   }
   interface ReciepeCard {
-    image: ImageSourcePropType;
+    image: string;
     name: string;
     prepTime: string;
     id: string;

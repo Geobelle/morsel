@@ -11,7 +11,7 @@ interface ReciepeDetails {
   id: string;
   image: string;
   name: string;
-  time: string;
+  prepTime: string;
   category: string;
   ingredients: Ingredients[];
   Preparation: Preparation[];
@@ -20,7 +20,7 @@ interface ReciepeDetails {
 const ReciepeInfoCard = ({
   id,
   name,
-  time,
+  prepTime,
   image,
   category,
 }: ReciepeDetails) => {
@@ -59,7 +59,7 @@ const ReciepeInfoCard = ({
             {name}
           </Text>
 
-          <Text className="text-sm text-foreground font-body">{time}</Text>
+          <Text className="text-sm text-foreground font-body">{prepTime}</Text>
 
           <Text className="self-start font-body text-xs text-primary-dark bg-sage-light rounded-md px-2 py-1">
             {category}

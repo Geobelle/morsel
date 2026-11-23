@@ -8,7 +8,7 @@ type ExactMatchesProps = ReciepeCard & {
 
 const ExactMatches = ({
   name,
-  time,
+  prepTime,
   image,
   id,
   availableIngredients,
@@ -20,13 +20,13 @@ const ExactMatches = ({
       onPress={() => {
         router.push({
           pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
-          params: { id },
+          params: { id: id },
         });
       }}
       className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
       <Image
-        source={image}
+        source={{ uri: image }}
         style={{ width: "30%", height: 100 }}
         resizeMode="cover"
       />
@@ -44,7 +44,7 @@ const ExactMatches = ({
           {name}
         </Text>
 
-        <Text className="text-sm text-foreground font-body">{time}</Text>
+        <Text className="text-sm text-foreground font-body">{prepTime}</Text>
 
         <Text className="text-sm text-foreground font-body">
           {availableIngredients} of {totalIngredients} ingredients available

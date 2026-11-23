@@ -1,18 +1,69 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { pantryItems, reciepeDetails } from "../../constants/data";
 import { icons } from "../../constants/icons";
 import { getRecipeMatches } from "../../utils/recipeMatching";
+import { useApi } from "../lib/api";
 
 const SeeAllMatches = () => {
   const router = useRouter();
   const { type } = useLocalSearchParams<{ type: string }>();
 
+  const { request } = useApi();
+
+  const [PantryItems, setPantryItems] = useState<pantryitem[]>([]);
+
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const data = await request("/api/pantry/allPantryItems", {
+          method: "GET",
+        });
+
+        setPantryItems(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchPantryItems();
+  });
+
+  const [recipesList, setRecipesList] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipesList(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image,
+              time: item.prepTime,
+              category: item.category,
+              ingredients: item.ingredients,
+              Preparation: item.instructions,
+            })),
+          );
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+
   const { exactRecipe, partialRecipe } = getRecipeMatches(
-    reciepeDetails,
-    pantryItems,
+    recipesList,
+    PantryItems,
   );
 
   const isExact = type === "exact";
@@ -59,7 +110,7 @@ const SeeAllMatches = () => {
             className="bg-white flex-row rounded-2xl border border-sage-light overflow-hidden mb-4"
           >
             <Image
-              source={item.image}
+              source={{ uri: item.image }}
               style={{ width: 110, height: 120 }}
               resizeMode="cover"
             />
@@ -73,7 +124,7 @@ const SeeAllMatches = () => {
               </Text>
 
               <Text className="font-body text-foreground text-sm mt-1">
-                {item.time}
+                {item.prepTime}
               </Text>
 
               {isExact ? (

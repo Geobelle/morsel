@@ -8,7 +8,7 @@ type PartialMatchesProps = ReciepeCard & {
 
 const PartialMatches = ({
   name,
-  time,
+  prepTime,
   image,
   availableIngredients,
   totalIngredients,
@@ -27,7 +27,7 @@ const PartialMatches = ({
       className="bg-white w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4"
     >
       <Image
-        source={image}
+        source={{ uri: image }}
         style={{ width: "30%", height: 100 }}
         resizeMode="cover"
       />
@@ -44,7 +44,7 @@ const PartialMatches = ({
           {name}
         </Text>
 
-        <Text className="text-sm text-foreground font-body">{time}</Text>
+        <Text className="text-sm text-foreground font-body">{prepTime}</Text>
 
         <Text className="text-sm text-foreground font-body">
           {availableIngredients} of {totalIngredients} ingredients available
