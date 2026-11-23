@@ -1,18 +1,67 @@
+import { useApi } from "@/lib/api";
 import { router, useIsFocused } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddItem from "../../components/AddItem";
 import BottomDrawer from "../../components/BottomDrawer";
 import OptionalList from "../../components/OptionalList";
 import ToBuyList from "../../components/ToBuyList";
-import { optionalItems, toBuyList } from "../../constants/data";
 import { icons } from "../../constants/icons";
 import image from "../../constants/image";
+
+interface List {
+  _id: string;
+  name: string;
+  category: string;
+  quantity: string;
+}
 
 const ShoppingList = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const isFocused = useIsFocused();
+
+  const { request } = useApi();
+
+  const [toBuyList, setToBuyList] = useState<List[]>([]);
+
+  const [optionalList, setOptionalList] = useState<List[]>([]);
+
+  useEffect(() => {
+    const fetchToBuyList = async () => {
+      try {
+        const data = await request("/api/shoppingList/toBuy?category=toBuy", {
+          method: "GET",
+        });
+
+        setToBuyList(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchToBuyList();
+  });
+
+  useEffect(() => {
+    const fetchOptionalList = async () => {
+      try {
+        const data = await request(
+          "/api/shoppingList/optional?category=optional",
+          {
+            method: "GET",
+          },
+        );
+
+        setOptionalList(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchOptionalList();
+  });
+
   return (
     <SafeAreaView className="flex-1 p-6   bg-background">
       <View className="flex mb-6 flex-row relative items-center">
@@ -52,7 +101,23 @@ const ShoppingList = () => {
               To Buy
             </Text>
 
-            <Pressable>
+            <Pressable
+              onPress={async () => {
+                try {
+                  await request(
+                    `/api/shoppingList/toBuy/delete?category=toBuy`,
+                    {
+                      method: "DELETE",
+                    },
+                  );
+
+                  // 3. Navigate after successful creation
+                  // router.push("/(tabs)/pantry");
+                } catch (error) {
+                  console.error("Error deleting all to buy options", error);
+                }
+              }}
+            >
               <Text className="text-primary-dark font-ingredient text-lg">
                 Clear all
               </Text>
@@ -60,7 +125,7 @@ const ShoppingList = () => {
           </View>
 
           {toBuyList.length > 0 ? (
-            toBuyList.map((item) => <ToBuyList key={item.id} {...item} />)
+            toBuyList.map((item) => <ToBuyList key={item._id} {...item} />)
           ) : (
             <Text className="text-foreground font-body">No items yet</Text>
           )}
@@ -73,16 +138,32 @@ const ShoppingList = () => {
               Optional
             </Text>
 
-            <Pressable>
+            <Pressable
+              onPress={async () => {
+                try {
+                  await request(
+                    `/api/shoppingList/optional/delete?category=optional`,
+                    {
+                      method: "DELETE",
+                    },
+                  );
+
+                  // 3. Navigate after successful creation
+                  // router.push("/(tabs)/pantry");
+                } catch (error) {
+                  console.error("Error deleting all optional", error);
+                }
+              }}
+            >
               <Text className="text-primary-dark font-ingredient text-lg">
                 Clear all
               </Text>
             </Pressable>
           </View>
 
-          {optionalItems.length > 0 ? (
-            optionalItems.map((item) => (
-              <OptionalList key={item.id} {...item} />
+          {optionalList.length > 0 ? (
+            optionalList.map((item) => (
+              <OptionalList key={item._id} {...item} />
             ))
           ) : (
             <Text className="text-foreground font-body">No items yet</Text>
@@ -111,7 +192,21 @@ const ShoppingList = () => {
             Add to list
           </Text>
         </Pressable>
-        <Pressable className=" border-2 border-primary-dark py-4  items-center rounded-full mt-4">
+        <Pressable
+          onPress={async () => {
+            try {
+              await request(`/api/shoppingList/delete`, {
+                method: "DELETE",
+              });
+
+              // 3. Navigate after successful creation
+              // router.push("/(tabs)/pantry");
+            } catch (error) {
+              console.error("Error deleting all", error);
+            }
+          }}
+          className=" border-2 border-primary-dark py-4  items-center rounded-full mt-4"
+        >
           <Text className="text-xl font-button text-primary-dark">
             Clear all
           </Text>

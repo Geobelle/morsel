@@ -30,7 +30,7 @@ const RecipeDetails = () => {
   useEffect(() => {
     const fetchRecipeDetails = async () => {
       try {
-        const data = await request(`/api/recipes/${id}`, {
+        const data = await request(`/api/recipes/details/${id}`, {
           method: "GET",
         });
         setRecipeDetails(data.data);
@@ -91,7 +91,22 @@ const RecipeDetails = () => {
               <Text className="font-body text-primary-dark">✎ Edit</Text>
             </Pressable>
 
-            <Pressable className="bg-red-300 rounded-full flex items-center  px-3 py-3">
+            <Pressable
+              onPress={async () => {
+                try {
+                  // 2. Create pantry item
+                  await request(`/api/recipes/delete/${id}`, {
+                    method: "DELETE",
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push("/(tabs)/recipes");
+                } catch (error) {
+                  console.error("Error deleting recipe:", error);
+                }
+              }}
+              className="bg-red-300 rounded-full flex items-center  px-3 py-3"
+            >
               <Ionicons name="trash-outline" size={24} color={"#B91C1C"} />
             </Pressable>
           </View>

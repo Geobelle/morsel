@@ -1,11 +1,16 @@
+import { useApi } from "@/lib/api";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import image from "../constants/image";
 import ListTypeToggle from "./ListToogleType";
 
 const AddItem = () => {
-  const [text, setText] = useState("");
+  const { request } = useApi();
+
+  const [name, setname] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [listType, setListType] = useState<"toBuy" | "optional">("toBuy");
   return (
     <View>
@@ -18,8 +23,8 @@ const AddItem = () => {
 
           <BottomSheetTextInput
             style={styles.input}
-            onChangeText={setText}
-            value={text}
+            onChangeText={setname}
+            value={name}
             placeholder="e.g tomatoes"
             placeholderTextColor="#8FB89A"
           />
@@ -33,8 +38,8 @@ const AddItem = () => {
         <View style={styles.container}>
           <BottomSheetTextInput
             style={styles.input}
-            onChangeText={setText}
-            value={text}
+            onChangeText={setQuantity}
+            value={quantity}
             placeholder="e.g 1 cup"
             placeholderTextColor="#8FB89A"
           />
@@ -42,10 +47,29 @@ const AddItem = () => {
       </View>
 
       <ListTypeToggle value={listType} onChange={setListType} />
-      <Pressable className="bg-primary-dark py-4  items-center rounded-full mt-4">
-        <Text className="text-xl font-button text-background">
-          Add to pantry
-        </Text>
+      <Pressable
+        onPress={async () => {
+          try {
+            // 2. Create pantry item
+            await request("/api/shoppingList/create", {
+              method: "POST",
+              body: JSON.stringify({
+                name: name,
+                quantity: quantity,
+                category: listType,
+              }),
+            });
+
+            // 3. Navigate after successful creation
+            router.push("/shoppingList");
+          } catch (error) {
+            console.error("Error creating shopping list item:", error);
+          }
+        }}
+
+        className="bg-primary-dark py-4  items-center rounded-full mt-4"
+      >
+        <Text className="text-xl font-button text-background">Add to list</Text>
       </Pressable>
     </View>
   );

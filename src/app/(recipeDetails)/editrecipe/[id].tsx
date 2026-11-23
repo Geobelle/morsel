@@ -1,5 +1,6 @@
-import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useApi } from "@/lib/api";
+import { router, useIsFocused, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -12,44 +13,42 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import BottomDrawer from "../../../../components/BottomDrawer";
 import CategoryDropDown from "../../../../components/CategoryDropdown";
+import ImagePickerComponent from "../../../../components/ImagePicker";
 import IngredientsFields from "../../../../components/IngredientsFields";
 import InstructionsField from "../../../../components/InstructionsField";
-import { reciepeDetails } from "../../../../constants/data";
+
 import { icons } from "../../../../constants/icons";
 import image from "../../../../constants/image";
+import { uploadImage } from "../../../../utils/uploadImage";
+
+interface ReciepeDetails {
+  id: string;
+  image: string;
+  name: string;
+  time: string;
+  category: string;
+  ingredients: Ingredients[];
+  instructions: Preparation[];
+}
 
 const EditRecipe = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const recipe = reciepeDetails.find((item) => item.id === id);
-
-  const [name, setName] = useState(
-    () => recipe?.name.replace(/\b\w/g, (char) => char.toUpperCase()) || "",
-  );
-
-  const [category, setCategory] = useState(recipe?.category || "");
-  const [time, setTime] = useState(recipe?.time || "");
-
+  // const recipe = reciepeDetails.find((item) => item.id === id);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+  const isFocused = useIsFocused();
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [time, setTime] = useState("");
   const [ingredients, setIngredients] = useState<
     { id: string; name: string; quantity: string }[]
-  >(
-    () =>
-      recipe?.ingredients.map((item) => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity,
-      })) || [],
-  );
+  >([]);
 
   const [instructions, setInstructions] = useState<
     { id: string; text: string }[]
-  >(
-    () =>
-      recipe?.Preparation.map((step) => ({
-        id: step.id,
-        text: step.name,
-      })) || [],
-  );
+  >([]);
 
   const addIngredient = () => {
     setIngredients((prev) => [
@@ -77,10 +76,11 @@ const EditRecipe = () => {
   };
 
   const addStep = () => {
-    setInstructions((prev) => [
-      ...prev,
-      { id: Date.now().toString(), text: "" },
-    ]);
+    setInstructions((prev) => {
+      const nextId = Math.max(0, ...prev.map((step) => Number(step.id))) + 1;
+
+      return [...prev, { id: nextId.toString(), text: "" }];
+    });
   };
 
   const updateStep = (id: string, text: string) => {
@@ -92,6 +92,42 @@ const EditRecipe = () => {
   const deleteStep = (id: string) => {
     setInstructions((prev) => prev.filter((step) => step.id !== id));
   };
+  const { request } = useApi();
+
+  useEffect(() => {
+    const fetchRecipeDetails = async () => {
+      try {
+        const data = await request(`/api/recipes/details/${id}`, {
+          method: "GET",
+        });
+        const recipedetails = data.data;
+
+        setName(recipedetails.name);
+        setTime(recipedetails.prepTime);
+        setCategory(recipedetails.category);
+        setSelectedImage(recipedetails.image);
+        setIngredients(
+          recipedetails.ingredients.map((item: any, index: number) => ({
+            id: item.id?.toString() || index.toString(),
+            name: item.name || "",
+            quantity: item.quantity || "",
+          })),
+        );
+
+        setInstructions(
+          recipedetails.instructions.map((step: any, index: number) => ({
+            id: step.id?.toString() || index.toString(),
+            text: step.name || step.text || "",
+          })),
+        );
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+    if (id) {
+      fetchRecipeDetails();
+    }
+  }, [id]);
 
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
@@ -115,13 +151,45 @@ const EditRecipe = () => {
               </Text>
             </View>
 
-            <View className="my-6 w-full h-[220px] rounded-xl overflow-hidden items-center justify-center">
-              <Image
-                source={recipe?.image}
-                style={{ width: "100%", height: "100%" }}
-                resizeMode="cover"
-              />
-            </View>
+            <Pressable
+              onPress={() => setShowDrawer(true)}
+              className="my-6 border border-dashed border-primary w-full h-[220px] rounded-xl flex items-center justify-center"
+            >
+              {selectedImage ? (
+                <Image
+                  source={{ uri: selectedImage }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              ) : (
+                <>
+                  <Text className="mb-2 text-primary-dark font-button text-xl">
+                    Add a photo
+                  </Text>
+
+                  <View className="bg-sage-light p-6 rounded-full">
+                    <Image
+                      source={image.camera}
+                      style={{ width: 60, height: 60 }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </>
+              )}
+            </Pressable>
+            {isFocused && showDrawer && (
+              <BottomDrawer
+                visible={showDrawer}
+                onClose={() => setShowDrawer(false)}
+              >
+                <ImagePickerComponent
+                  onImageSelected={(uri) => {
+                    setSelectedImage(uri);
+                    setShowDrawer(false);
+                  }}
+                />
+              </BottomDrawer>
+            )}
 
             <View>
               <Text className="mb-2 text-primary-dark font-button text-xl">
@@ -247,13 +315,67 @@ const EditRecipe = () => {
               ))}
             </View>
 
-            <Pressable className="bg-primary-dark py-4 items-center rounded-full mt-6">
+            <Pressable
+              onPress={async () => {
+                try {
+                  let imgUrl = "";
+
+                  // 1. Upload image to ImageKit if one was selected
+                  if (selectedImage) {
+                    const auth = await request("/api/pantry/imagekit-auth");
+
+                    imgUrl = await uploadImage(selectedImage, auth);
+                  }
+
+                  // 2. Update pantry item
+                  await request(`/api/recipes/edit/${id}`, {
+                    method: "PATCH",
+                    body: JSON.stringify({
+                      name: name,
+                      prepTime: time,
+                      category: category,
+                      imgUrl: imgUrl,
+                      ingredients: ingredients,
+                      instructions: instructions.map((step) => ({
+                        id: step.id,
+                        name: step.text,
+                      })),
+                    }),
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push({
+                    pathname: "/(recipeDetails)/recipeDetailsPage/[id]",
+                    params: { id: id },
+                  });
+                } catch (error) {
+                  console.error("Error editing recipe :", error);
+                }
+              }}
+
+              className="bg-primary-dark py-4 items-center rounded-full mt-6"
+            >
               <Text className="text-xl font-button text-background">
                 Save Changes
               </Text>
             </Pressable>
 
-            <Pressable className="border-2 border-red-500 py-4 items-center rounded-full mt-4">
+            <Pressable
+              onPress={async () => {
+                try {
+                  // 2. Create pantry item
+                  await request(`/api/recipes/delete/${id}`, {
+                    method: "DELETE",
+                  });
+
+                  // 3. Navigate after successful creation
+                  router.push("/(tabs)/recipes");
+                } catch (error) {
+                  console.error("Error deleting recipe:", error);
+                }
+              }}
+              className="border-2 border-red-500 py-4 items-center rounded-full mt-4"
+            >
               <Text className="text-xl font-button text-red-500">
                 Delete items
               </Text>
