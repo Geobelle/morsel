@@ -1,8 +1,8 @@
+import { useUser } from "@clerk/expo";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import QuickAction from "../../../components/QuickAction";
 import QuickCategories from "../../../components/QuickCategories";
 import ReciepeCard from "../../../components/ReciepeCard";
@@ -13,6 +13,7 @@ import image from "../../../constants/image";
 
 const Tabindex = () => {
   const { request } = useApi();
+  const { user } = useUser();
 
   const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
   const [randomRecipes, setRandomRecipes] = useState<ReciepeDetails[]>([]);
@@ -69,7 +70,8 @@ const Tabindex = () => {
           <View>
             <View className="flex-row justify-between items-center">
               <Text className="text-primary-dark font-heading text-2xl">
-                Good Morning Gina 👋
+                Good Morning{" "}
+                {user?.fullName || user?.firstName || "Morsel cook"} 👋
               </Text>
 
               <Pressable
