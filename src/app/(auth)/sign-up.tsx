@@ -100,8 +100,6 @@ export default function SignUpScreen() {
       if (signUp.status === "complete") {
         const clerkId = signUp.createdUserId;
 
-        console.log("Clerk user ID:", clerkId);
-
         if (!clerkId) {
           throw new Error("Clerk user ID is missing.");
         }

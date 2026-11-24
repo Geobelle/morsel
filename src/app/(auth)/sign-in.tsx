@@ -37,7 +37,7 @@ export default function SignInScreen() {
       },
       body: JSON.stringify({ email: email }),
     });
-    console.log(data, "data");
+
     router.replace("/(tabs)" as Href);
   };
 
