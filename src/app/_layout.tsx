@@ -18,6 +18,9 @@ function AppNavigator() {
   useEffect(() => {
     if (!isLoaded) return;
 
+    const isLaunchScreen = String(segments[0]) === "index";
+    if (isLaunchScreen) return;
+
     const inAuthGroup = String(segments[0]) === "(auth)";
     if (!isSignedIn && !inAuthGroup) {
       router.replace("/(auth)/sign-in" as Href);
@@ -25,8 +28,6 @@ function AppNavigator() {
       router.replace("/(tabs)" as Href);
     }
   }, [isLoaded, isSignedIn, segments]);
-
-  if (!isLoaded) return null;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

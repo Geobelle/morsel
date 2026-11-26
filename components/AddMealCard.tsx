@@ -1,10 +1,10 @@
 import { Image, Text, View } from "react-native";
 
-const AddMealCard = ({ id, name, time, image, category }: ReciepeCard) => {
+const AddMealCard = ({ id, name, prepTime, image, category }: ReciepeCard) => {
   return (
     <View className="bg-cream w-full flex flex-row rounded-xl border border-sage-light overflow-hidden mb-4">
       <Image
-        source={image}
+        source={{ uri: image }}
         style={{ width: "40%", height: 120 }}
         resizeMode="cover"
       />
@@ -15,7 +15,7 @@ const AddMealCard = ({ id, name, time, image, category }: ReciepeCard) => {
             {name}
           </Text>
 
-          <Text className="text-sm text-foreground font-body">{time}</Text>
+          <Text className="text-sm text-foreground font-body">{prepTime}</Text>
         </View>
       </View>
     </View>

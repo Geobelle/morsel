@@ -55,7 +55,7 @@ const AddMeal = () => {
             id={recipe.id}
             name={recipe.name}
             image={recipe.image}
-            time={recipe.time}
+            prepTime={recipe.prepTime}
             category={recipe.category}
           />
         )}

@@ -13,7 +13,7 @@ const ViewDay = () => {
           <View className="flex mb-2 flex-row relative items-center">
             <Pressable
               onPress={() => {
-                router.push("/planMeals");
+                router.back();
               }}
               className="bg-sage-light rounded-full p-3 z-50"
             >

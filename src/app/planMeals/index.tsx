@@ -31,7 +31,7 @@ const PlanPage = () => {
           <View className="flex mb-2 flex-row relative items-center">
             <Pressable
               onPress={() => {
-                router.push("/");
+                router.push("/(tabs)");
               }}
               className="bg-sage-light rounded-full p-3 z-50"
             >
