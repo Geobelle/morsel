@@ -1,22 +1,59 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeCategory from "../../../components/RecipeCategory";
 import SearchBar from "../../../components/SearchBar";
 import SelectRecipeCard from "../../../components/SelectRecipeCard";
-import { reciepeDetails } from "../../../constants/data";
+// import { reciepeDetails } from "../../../constants/data";
+import { useApi } from "@/lib/api";
 import { icons } from "../../../constants/icons";
 
 const SelectRecipe = () => {
-  const { category } = useLocalSearchParams<{ category?: string }>();
+  const { request } = useApi();
+
+  const [recipes, setRecipes] = useState<ReciepeDetails[]>([]);
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await request("/api/recipes/getAllRecipes", {
+          method: "GET",
+        });
+        if (Array.isArray(data.data)) {
+          setRecipes(
+            data.data.map((item: any) => ({
+              id: item._id,
+              name: item.name,
+              image: item.image,
+              prepTime: item.prepTime,
+              category: item.category,
+              ingredients: item.ingredients,
+              Preparation: item.instructions,
+            })),
+          );
+        } else {
+          console.error("Expected an array of recipes:", data);
+        }
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchRecipes();
+  }, []);
+  const { category, date, type } = useLocalSearchParams<{
+    category?: string;
+    date: string;
+    type?: string;
+  }>();
   const [searchText, setSearchText] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState(
     category?.toLowerCase() || "all",
   );
 
-  const filteredRecipes = reciepeDetails.filter((item) => {
+  const filteredRecipes = recipes.filter((item) => {
     const matchesCategory =
       selectedCategory === "all" ||
       item.category.toLowerCase() === selectedCategory;

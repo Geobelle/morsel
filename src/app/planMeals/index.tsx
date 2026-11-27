@@ -1,32 +1,84 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useState } from "react";
+
+import { useApi } from "@/lib/api";
+import { useEffect, useState } from "react";
 import { Image, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MealCalendar from "../../../components/MealCalender";
 import { icons } from "../../../constants/icons";
 
+export interface Meal {
+  _id: string;
+  name: string;
+  type: "default" | "custom";
+  recipe: string | ReciepeDetails | null;
+}
+
+export interface MealPlan {
+  _id: string;
+  userId: string;
+  date: string;
+  meals: Meal[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 const PlanPage = () => {
+  const { request } = useApi();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [daysMeal, setDaysMeal] = useState<MealPlan | null>(null);
 
   const getDateKey = (date: Date) => {
-    const day = date.toLocaleDateString("en-US", {
-      weekday: "long",
-    });
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-    const month = date.toLocaleDateString("en-US", {
-      month: "short",
-    });
-
-    const dayNumber = String(date.getDate()).padStart(2, "0");
-
-    return ` ${day}, ${month} ${dayNumber}`;
+    return `${year}-${month}-${day}`;
   };
+
+  useEffect(() => {
+    const fetchTodaysMeal = async () => {
+      try {
+        const data = await request(
+          `/api/planMeals/getMealByDate/${getDateKey(selectedDate)}`,
+          {
+            method: "GET",
+          },
+        );
+
+        setDaysMeal(data.data);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+    };
+
+    fetchTodaysMeal();
+  }, [selectedDate]);
+
+  const getMeal = (mealName: string) => {
+    return daysMeal?.meals.find(
+      (meal) => meal.name.toLowerCase() === mealName.toLowerCase(),
+    );
+  };
+
+  const getMealRecipe = (mealName: string) => {
+    const recipe = getMeal(mealName)?.recipe;
+
+    if (recipe && typeof recipe === "object") {
+      return recipe as ReciepeDetails;
+    }
+    return null;
+  };
+  const breakfastRecipe = getMealRecipe("Breakfast");
+  const lunchRecipe = getMealRecipe("Lunch");
+  const dinnerRecipe = getMealRecipe("Dinner");
+  const snackRecipe = getMealRecipe("Snacks");
 
   // rest of your component
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <View className="flex mb-2 flex-row relative items-center">
             <Pressable
@@ -54,7 +106,6 @@ const PlanPage = () => {
               plannedDates={["2026-11-11", "2026-11-12", "2026-11-14"]}
               onDateChange={(date) => {
                 setSelectedDate(date);
-                console.log("Selected date:", date);
               }}
             />
           </View>
@@ -83,113 +134,212 @@ const PlanPage = () => {
             <Text className="text-foreground font-recipe-title text-xl">
               Breakfast
             </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/planMeals/selectRecipe",
-                  params: {
-                    date: getDateKey(selectedDate),
-                  },
-                });
-              }}
-              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
-            >
-              <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
-              <Text className=" text-primary-dark font-button text-lg">
-                Add Meal
-              </Text>
-            </Pressable>
+            {breakfastRecipe ? (
+              <Pressable
+                onPress={() => {
+                  // You can add your edit/replace recipe navigation here
+                }}
+                className="my-3 flex-row items-center gap-3 bg-cream p-3 rounded-2xl"
+              >
+                <Image
+                  source={{ uri: breakfastRecipe.image }}
+                  className="w-24 h-24 rounded-2xl"
+                  resizeMode="cover"
+                />
+
+                <View className="flex-1">
+                  <Text className="text-foreground font-recipe-title text-lg">
+                    {breakfastRecipe.name}
+                  </Text>
+
+                  <View className="flex-row items-center gap-1 mt-1">
+                    <Ionicons name="time-outline" size={16} color="#53765B" />
+
+                    <Text className="text-primary-dark font-body">
+                      {breakfastRecipe.prepTime}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/planMeals/selectRecipe",
+                    params: {
+                      date: getDateKey(selectedDate),
+                    },
+                  });
+                }}
+                className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+              >
+                <Ionicons name="add-circle" size={30} color="#53765B" />
+
+                <Text className="text-primary-dark font-button text-lg">
+                  Add Meal
+                </Text>
+              </Pressable>
+            )}
           </View>
 
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Lunch
             </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/planMeals/selectRecipe",
-                  params: {
-                    date: getDateKey(selectedDate),
-                  },
-                });
-              }}
-              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
-            >
-              <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
-              <Text className=" text-primary-dark font-button text-lg">
-                Add Meal
-              </Text>
-            </Pressable>
+            {lunchRecipe ? (
+              <Pressable
+                onPress={() => {
+                  // You can add your edit/replace recipe navigation here
+                }}
+                className="my-3 flex-row items-center gap-3 bg-cream p-3 rounded-2xl"
+              >
+                <Image
+                  source={{ uri: lunchRecipe.image }}
+                  className="w-24 h-24 rounded-2xl"
+                  resizeMode="cover"
+                />
+
+                <View className="flex-1">
+                  <Text className="text-foreground font-recipe-title text-lg">
+                    {lunchRecipe.name}
+                  </Text>
+
+                  <View className="flex-row items-center gap-1 mt-1">
+                    <Ionicons name="time-outline" size={16} color="#53765B" />
+
+                    <Text className="text-primary-dark font-body">
+                      {lunchRecipe.prepTime}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/planMeals/selectRecipe",
+                    params: {
+                      date: getDateKey(selectedDate),
+                    },
+                  });
+                }}
+                className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+              >
+                <Ionicons name="add-circle" size={30} color="#53765B" />
+
+                <Text className="text-primary-dark font-button text-lg">
+                  Add Meal
+                </Text>
+              </Pressable>
+            )}
           </View>
+
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Dinner
             </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/planMeals/selectRecipe",
-                  params: {
-                    date: getDateKey(selectedDate),
-                  },
-                });
-              }}
-              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
-            >
-              <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
-              <Text className=" text-primary-dark font-button text-lg">
-                Add Meal
-              </Text>
-            </Pressable>
+            {dinnerRecipe ? (
+              <Pressable
+                onPress={() => {
+                  // You can add your edit/replace recipe navigation here
+                }}
+                className="my-3 flex-row items-center gap-3 bg-cream p-3 rounded-2xl"
+              >
+                <Image
+                  source={{ uri: dinnerRecipe.image }}
+                  className="w-24 h-24 rounded-2xl"
+                  resizeMode="cover"
+                />
+
+                <View className="flex-1">
+                  <Text className="text-foreground font-recipe-title text-lg">
+                    {dinnerRecipe.name}
+                  </Text>
+
+                  <View className="flex-row items-center gap-1 mt-1">
+                    <Ionicons name="time-outline" size={16} color="#53765B" />
+
+                    <Text className="text-primary-dark font-body">
+                      {dinnerRecipe.prepTime}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/planMeals/selectRecipe",
+                    params: {
+                      date: getDateKey(selectedDate),
+                    },
+                  });
+                }}
+                className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+              >
+                <Ionicons name="add-circle" size={30} color="#53765B" />
+
+                <Text className="text-primary-dark font-button text-lg">
+                  Add Meal
+                </Text>
+              </Pressable>
+            )}
           </View>
+
           <View>
             <Text className="text-foreground font-recipe-title text-xl">
               Snacks
             </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/planMeals/selectRecipe",
-                  params: {
-                    date: getDateKey(selectedDate),
-                  },
-                });
-              }}
-              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
-            >
-              <Ionicons name="add-circle" size={30} color={"#53765B"} />
 
-              <Text className=" text-primary-dark font-button text-lg">
-                Add Meal
-              </Text>
-            </Pressable>
-          </View>
+            {snackRecipe ? (
+              <Pressable
+                onPress={() => {
+                  // You can add your edit/replace recipe navigation here
+                }}
+                className="my-3 flex-row items-center gap-3 bg-cream p-3 rounded-2xl"
+              >
+                <Image
+                  source={{ uri: snackRecipe.image }}
+                  className="w-24 h-24 rounded-2xl"
+                  resizeMode="cover"
+                />
 
-          <View>
-            <Text className="text-foreground font-recipe-title text-xl">
-              Drinks
-            </Text>
-            <Pressable
-              onPress={() => {
-                router.push({
-                  pathname: "/planMeals/selectRecipe",
-                  params: {
-                    date: getDateKey(selectedDate),
-                  },
-                });
-              }}
-              className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
-            >
-              <Ionicons name="add-circle" size={30} color={"#53765B"} />
+                <View className="flex-1">
+                  <Text className="text-foreground font-recipe-title text-lg">
+                    {snackRecipe.name}
+                  </Text>
 
-              <Text className=" text-primary-dark font-button text-lg">
-                Add Meal
-              </Text>
-            </Pressable>
+                  <View className="flex-row items-center gap-1 mt-1">
+                    <Ionicons name="time-outline" size={16} color="#53765B" />
+
+                    <Text className="text-primary-dark font-body">
+                      {snackRecipe.prepTime}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  router.push({
+                    pathname: "/planMeals/selectRecipe",
+                    params: {
+                      date: getDateKey(selectedDate),
+                    },
+                  });
+                }}
+                className="my-3 py-3 border border-dashed border-primary w-full rounded-2xl flex-row gap-2 items-center bg-sage-light justify-center"
+              >
+                <Ionicons name="add-circle" size={30} color="#53765B" />
+
+                <Text className="text-primary-dark font-button text-lg">
+                  Add Meal
+                </Text>
+              </Pressable>
+            )}
           </View>
 
           <Pressable className="bg-primary-dark py-4  items-center rounded-full mt-6">

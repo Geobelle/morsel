@@ -1,5 +1,11 @@
-import { useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  type ScrollViewInstance,
+} from "react-native";
 
 type MealCalendarProps = {
   plannedDates?: string[];
@@ -18,10 +24,9 @@ const getDateRange = () => {
   const dates: Date[] = [];
   const today = new Date();
 
-  // Start at midnight to avoid time-related date differences
   today.setHours(0, 0, 0, 0);
 
-  for (let i = -30; i <= 90; i++) {
+  for (let i = -10; i <= 30; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     dates.push(date);
@@ -40,7 +45,7 @@ export default function MealCalendar({
   plannedDates = [],
   onDateChange,
 }: MealCalendarProps) {
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance | null>(null);
   const hasInitialScrolled = useRef(false);
 
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -57,6 +62,11 @@ export default function MealCalendar({
 
   const [calendarWidth, setCalendarWidth] = useState(0);
 
+  // Notify parent when the calendar first opens
+  useEffect(() => {
+    onDateChange?.(selectedDate);
+  }, []);
+
   const monthYear = displayedMonth.toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
@@ -67,7 +77,7 @@ export default function MealCalendar({
     setCalendarWidth(width);
 
     if (!hasInitialScrolled.current) {
-      const todayIndex = 30;
+      const todayIndex = 10;
 
       const initialOffset = todayIndex * ITEM_SIZE - (width - ITEM_WIDTH) / 2;
 
@@ -94,9 +104,13 @@ export default function MealCalendar({
   };
 
   const selectDate = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (date < today) return;
+
     setSelectedDate(date);
     onDateChange?.(date);
-
     setDisplayedMonth(date);
   };
 
@@ -124,9 +138,14 @@ export default function MealCalendar({
         }}
       >
         {dates.map((date) => {
-          const isSelected = getDateKey(date) === getDateKey(selectedDate);
+          const dateKey = getDateKey(date);
+          const isSelected = dateKey === getDateKey(selectedDate);
+          const hasMeals = plannedDates.includes(dateKey);
 
-          const hasMeals = plannedDates.includes(getDateKey(date));
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          const isPastDate = date < today;
 
           const dayName = date.toLocaleDateString("en-US", {
             weekday: "short",
@@ -134,7 +153,8 @@ export default function MealCalendar({
 
           return (
             <Pressable
-              key={getDateKey(date)}
+              key={dateKey}
+              disabled={isPastDate}
               onPress={() => selectDate(date)}
               className={`w-[58px] h-[76px] rounded-3xl items-center justify-center ${
                 isSelected ? "bg-primary-dark" : "bg-sage-light"
@@ -142,7 +162,11 @@ export default function MealCalendar({
             >
               <Text
                 className={`font-body text-sm ${
-                  isSelected ? "text-white" : "text-foreground"
+                  isSelected
+                    ? "text-white"
+                    : isPastDate
+                      ? "text-gray-400"
+                      : "text-foreground"
                 }`}
               >
                 {dayName}
@@ -150,7 +174,11 @@ export default function MealCalendar({
 
               <Text
                 className={`font-heading text-lg ${
-                  isSelected ? "text-white" : "text-foreground"
+                  isSelected
+                    ? "text-white"
+                    : isPastDate
+                      ? "text-gray-400"
+                      : "text-foreground"
                 }`}
               >
                 {date.getDate()}
