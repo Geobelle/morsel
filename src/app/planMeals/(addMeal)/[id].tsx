@@ -119,7 +119,7 @@ const AddMeal = () => {
           </View>
 
           <TextInput
-            className="flex-1 border font-body text-foreground border-sage-light px-3 rounded-2xl h-16"
+            className="flex-1 border font-body text-foreground border-sage-light px-3 rounded-2xl h-20"
             value={note}
             onChangeText={setNote}
             placeholder="Add a note"
@@ -136,6 +136,7 @@ const AddMeal = () => {
                   date,
                   recipeId: id,
                   mealName: specificCategory,
+                  note: note,
                 }),
               });
 

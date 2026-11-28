@@ -94,7 +94,7 @@ const AddCustomMeal = () => {
             style={styles.input}
             onChangeText={setMealName}
             value={mealName}
-            placeholder="e.g tomatoes"
+            placeholder="e.g brunch"
             placeholderTextColor="#8FB89A"
           />
         </View>
@@ -123,7 +123,7 @@ const AddCustomMeal = () => {
           </View>
 
           <TextInput
-            className="flex-1 border font-body text-foreground border-sage-light px-3 rounded-2xl h-16"
+            className="flex-1 border font-body text-foreground border-sage-light px-3 rounded-2xl h-20"
             value={note}
             onChangeText={setNote}
             placeholder="Add a note"
@@ -145,6 +145,7 @@ const AddCustomMeal = () => {
                   date,
                   recipeId: id,
                   mealName: mealName,
+                  note: note,
                 }),
               });
 

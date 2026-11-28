@@ -11,6 +11,7 @@ export interface Meal {
   name: string;
   type: "default" | "custom";
   recipe: string | ReciepeDetails | null;
+  note?: string;
 }
 
 export interface MealPlan {
@@ -58,9 +59,12 @@ const ViewDay = () => {
       day: "numeric",
     });
   };
+
+  const customMeals =
+    daysMeal?.meals.filter((meal) => meal.type === "custom") || [];
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <View className="flex mb-8 flex-row relative items-center">
             <Pressable
@@ -111,14 +115,11 @@ const ViewDay = () => {
                   </Text>
 
                   <View className="flex-row items-center gap-1 mt-1">
-                    <Ionicons name="time-outline" size={16} color="#53765B" />
-
-                    <Text className="text-primary-dark font-body">
-                      {
-                        (getMeal("Breakfast")?.recipe as ReciepeDetails)
-                          .prepTime
-                      }
-                    </Text>
+                    {getMeal("Breakfast")?.note ? (
+                      <Text className="text-primary-dark text-xs font-body mt-1">
+                        {getMeal("Breakfast")?.note}
+                      </Text>
+                    ) : null}
                   </View>
                 </View>
               </Pressable>
@@ -170,11 +171,11 @@ const ViewDay = () => {
                   </Text>
 
                   <View className="flex-row items-center gap-1 mt-1">
-                    <Ionicons name="time-outline" size={16} color="#53765B" />
-
-                    <Text className="text-primary-dark font-body">
-                      {(getMeal("Lunch")?.recipe as ReciepeDetails).prepTime}
-                    </Text>
+                    {getMeal("Lunch")?.note ? (
+                      <Text className="text-primary-dark text-xs font-body mt-1">
+                        {getMeal("Lunch")?.note}
+                      </Text>
+                    ) : null}
                   </View>
                 </View>
               </Pressable>
@@ -227,11 +228,11 @@ const ViewDay = () => {
                   </Text>
 
                   <View className="flex-row items-center gap-1 mt-1">
-                    <Ionicons name="time-outline" size={16} color="#53765B" />
-
-                    <Text className="text-primary-dark font-body">
-                      {(getMeal("Dinner")?.recipe as ReciepeDetails).prepTime}
-                    </Text>
+                    {getMeal("Dinner")?.note ? (
+                      <Text className="text-primary-dark text-xs font-body mt-1">
+                        {getMeal("Dinner")?.note}
+                      </Text>
+                    ) : null}
                   </View>
                 </View>
               </Pressable>
@@ -284,11 +285,11 @@ const ViewDay = () => {
                   </Text>
 
                   <View className="flex-row items-center gap-1 mt-1">
-                    <Ionicons name="time-outline" size={16} color="#53765B" />
-
-                    <Text className="text-primary-dark font-body">
-                      {(getMeal("Snacks")?.recipe as ReciepeDetails).prepTime}
-                    </Text>
+                    {getMeal("Snacks")?.note ? (
+                      <Text className="text-primary-dark text-xs font-body mt-1">
+                        {getMeal("Snacks")?.note}
+                      </Text>
+                    ) : null}
                   </View>
                 </View>
               </Pressable>
@@ -313,6 +314,51 @@ const ViewDay = () => {
               </Pressable>
             )}
           </View>
+
+          {customMeals.length > 0 && (
+            <View className="mt-4">
+              <Text className="text-foreground font-recipe-title text-xl mb-3">
+                Custom Meals
+              </Text>
+
+              {customMeals.map((meal) => {
+                const recipe =
+                  meal.recipe && typeof meal.recipe === "object"
+                    ? meal.recipe
+                    : null;
+
+                return (
+                  <View key={meal._id} className="mb-4">
+                    <Text className="text-foreground font-ingredient text-lg">
+                      {meal.name}
+                    </Text>
+
+                    {recipe && (
+                      <View className="my-2 flex-row items-center gap-3 bg-cream p-3 rounded-2xl">
+                        <Image
+                          source={{ uri: recipe.image }}
+                          className="w-24 h-24 rounded-2xl"
+                          resizeMode="cover"
+                        />
+
+                        <View className="flex-1">
+                          <Text className="text-foreground font-recipe-title text-lg">
+                            {recipe.name}
+                          </Text>
+
+                          {meal.note ? (
+                            <Text className="text-foreground font-body mt-1">
+                              {meal.note}
+                            </Text>
+                          ) : null}
+                        </View>
+                      </View>
+                    )}
+                  </View>
+                );
+              })}
+            </View>
+          )}
 
           <Pressable
             onPress={() => {
